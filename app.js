@@ -62,8 +62,8 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-    failureRedirect:'http://localhost:5174/',
-    successRedirect:'http://localhost:5174/nso'
+    failureRedirect:'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app',
+    successRedirect:'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app/nso'
     // successRedirect:'/api/v1/host',
     // failureRedirect:'/'
 
