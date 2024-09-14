@@ -21,8 +21,8 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://sports-iitbhilai.netlify.app/',
-    // origin:'http://localhost:5174',
+    // origin: 'https://sports-iitbhilai.netlify.app/',
+    origin:'http://localhost:5174/',
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     // Allows cookies to be sent
