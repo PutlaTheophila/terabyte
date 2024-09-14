@@ -21,7 +21,7 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: 'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app',
     // origin: '*', // Your frontend's origin
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
