@@ -21,7 +21,7 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://fanciful-fenglisu-23d122.netlify.app/',
+    origin: 'https://sports-iitbhilai.netlify.app/',
     // origin:'http://localhost:5174',
 
     methods: 'GET,POST,PUT,DELETE',
