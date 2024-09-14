@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cors({
     // origin: 'https://sports-iitbhilai.netlify.app/',
     // origin:'http://localhost:5174',
-    origin:'https://sports-iitbhilai.netlify.app',
+    origin:'https://sss-vld6.onrender.com/',
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     // Allows cookies to be sent
@@ -66,8 +66,8 @@ app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
     // failureRedirect:'http://localhost:5174/',
     // successRedirect:'http://localhost:5174/nso'
 
-    failureRedirect:'https://sports-iitbhilai.netlify.app/',
-    successRedirect:'https://sports-iitbhilai.netlify.app/nso'
+    failureRedirect:'https://sss-vld6.onrender.com/',
+    successRedirect:'https://sss-vld6.onrender.com/nso'
 
 }) , (req ,res)=>{
     res.status(200).json('thank you for signing in')
