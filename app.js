@@ -21,9 +21,9 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    // origin: 'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app/',
-    origin:'http://localhost:5174',
-    // origin: '*', // Your frontend's origin
+    origin: 'https://fanciful-fenglisu-23d122.netlify.app/',
+    // origin:'http://localhost:5174',
+
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     // Allows cookies to be sent
