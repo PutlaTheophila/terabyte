@@ -21,7 +21,7 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app',
+    origin: 'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app/',
     // origin: '*', // Your frontend's origin
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
@@ -62,7 +62,7 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-    failureRedirect:'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app',
+    failureRedirect:'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app/',
     successRedirect:'https://66e5a85720ee947ee52a1123--fanciful-fenglisu-23d122.netlify.app/nso'
     // successRedirect:'/api/v1/host',
     // failureRedirect:'/'
