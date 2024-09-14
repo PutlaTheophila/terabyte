@@ -25,7 +25,7 @@ app.use(cors({
     // origin: '*', // Your frontend's origin
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
- // Allows cookies to be sent
+    // Allows cookies to be sent
 }));
 // app.use(cors());
 
