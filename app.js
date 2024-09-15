@@ -40,7 +40,7 @@ app.use(session({
         maxAge: 1000 * 1000,
         httpOnly: true,
         secure: true,           
-        sameSite: 'None', 
+        // sameSite: 'None', 
     }
 }));
 
@@ -63,7 +63,7 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-    failureRedirect:"https://sss-vld6.onrender.com/",
+    failureRedirect:"https://sss-vld6.onrender.com",
     successRedirect:"https://sss-vld6.onrender.com/nso"
 
 }) , (req ,res)=>{
