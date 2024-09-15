@@ -63,7 +63,7 @@ app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
     // failureRedirect:'http://localhost:5174/',
     // successRedirect:'http://localhost:5174/nso'
 
-    failureRedirect:'https://sss-vld6.onrender.com/',
+    failureRedirect:'https://sss-vld6.onrender.com',
     successRedirect:'https://sss-vld6.onrender.com/nso'
 
 }) , (req ,res)=>{
