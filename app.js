@@ -68,6 +68,5 @@ app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
 })
 
 
-
 app.use(errorHandler);
 export default app;
