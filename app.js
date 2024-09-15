@@ -37,10 +37,7 @@ app.use(session({
         collectionName: 'sessions', 
     }),
     cookie: {
-        maxAge: 1000 * 1000,
-        secure: true,          // Only send cookies over HTTPS
-        sameSite: 'None',      // Allows cross-origin cookies
-        httpOnly: true  
+        maxAge: 1000 * 1000,        // Only send cookies over HTTPS
     }
 }));
 
