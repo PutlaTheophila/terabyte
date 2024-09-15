@@ -20,6 +20,7 @@ export const getAllTournaments = asyncErrorHandler(async (req ,res , next) =>{
     tournaments.map((tournament)=>{
         modifiedTournaments.push({ 'id' : tournament._id ,'name' : tournament.name , 'location' : tournament.location , 'participants' :tournament.participants , 'sport' :tournament.sport , 'status' : tournament.status , 'date' : tournament.date} )
     })
+    console.log("hello from get all tournaments")
     res.status(200).json({
         status:'sucess',
         tournaments:modifiedTournaments
