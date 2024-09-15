@@ -28,7 +28,6 @@ app.use(cors({
 
 
 app.use(session({
-    //============================
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false, 
@@ -38,9 +37,6 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        // secure: true,           // Should be true for HTTPS, false for HTTP (local testing)
-        // sameSite: 'None',      // Allows cross-origin requests
-        // httpOnly: true         // Only send cookies over HTTPS
     }
 }));
 
