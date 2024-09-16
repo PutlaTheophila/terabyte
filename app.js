@@ -62,8 +62,8 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-    failureRedirect:"http://localhost:5173/",
-    successRedirect:"http://localhost:5173/nso"
+    failureRedirect:"http://localhost:5174/",
+    successRedirect:"http://localhost:5174/nso"
     
 
 }) , (req ,res)=>{
