@@ -21,7 +21,7 @@ dotenv.config();
 app.use(express.json());
 
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:"https://sss-vld6.onrender.com",
     methods: 'GET,POST,PUT,DELETE',
     credentials: true
 }));
@@ -37,8 +37,8 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        secure: false, // Set to true if using HTTPS
-        sameSite: 'none', // Allow cross-site requests
+        secure: false, 
+        sameSite: 'none',
         httpOnly: true
     }
 }));
@@ -61,8 +61,8 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-    failureRedirect:"http://localhost:5173/",
-    successRedirect:"http://localhost:5173/nso"
+    failureRedirect:"https://sss-vld6.onrender.com",
+    successRedirect:"https://sss-vld6.onrender.com/nso"
     
 
 }) , (req ,res)=>{
