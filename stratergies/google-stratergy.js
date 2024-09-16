@@ -5,9 +5,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-passport.serializeUser((user , done)=>{
+passport.serializeUser(async(user , done)=>{
   console.log('serialise user running .....')
   console.log(user);
+  const token = await jwt.sign({id:user?.emails[0]}, 'jbfijerbirebfuibr-efkwbfj0-njkfbjkwbhb');
+  res.cookie(token);
+  console.log(token);
   done(null ,user);
 })
 passport.deserializeUser((user , done)=>{
