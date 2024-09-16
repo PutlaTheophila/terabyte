@@ -9,7 +9,7 @@ mongoose.connect('mongodb+srv://putlat:LjPde0OWQxHLwLrU@cluster0.w4qzg.mongodb.n
 .then((conn)=>{
     console.log('connected to database 2');
     //starting app
-    app.listen(process.env.PORT, ()=>{
+    app.listen(process.env.PORT , ()=>{
         console.log(`app is listening on port ${port}`)
     })
     //connect to sheets
