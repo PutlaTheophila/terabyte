@@ -58,7 +58,7 @@ app.use('/api/v1/tournaments' ,tournamentsRouter)
 
 
 app.get('/' , (req ,res)=>{
-    res.status(200).send('hellooo');
+    res.status(200).send('helloo');
 })
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
