@@ -14,11 +14,13 @@ import playerRouter from "./routes/playerRoute.js";
 import interiitAttendanceRouter from "./routes/interiitAttendanceRoute.js";
 import tournamentsRouter from "./routes/tournamentsRoute.js";
 import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 
 app.use(express.json());
+app.use(cookieParser);
 
 app.use(cors({
     origin:"https://sss-vld6.onrender.com",
