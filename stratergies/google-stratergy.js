@@ -3,8 +3,6 @@ import {Strategy} from "passport-google-oauth20";
 import passport from "passport";
 import dotenv from "dotenv";
 
-
-
 dotenv.config();
 
 passport.serializeUser((user , done)=>{
