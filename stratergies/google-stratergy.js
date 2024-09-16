@@ -24,6 +24,5 @@ export default passport.use(
     async (accessToken, refreshToken, profile, done) => {
       done(null, profile);
     })
-
 );
 
