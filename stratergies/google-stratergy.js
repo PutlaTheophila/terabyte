@@ -10,7 +10,7 @@ passport.serializeUser((user , done)=>{
   done(null ,user);
 })
 passport.deserializeUser((user , done)=>{
-  console.log('hello...................')
+  console.log('hello...................' , "hello........")
   done(null ,user);
 })
 
