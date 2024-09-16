@@ -7,7 +7,7 @@ dotenv.config();
 
 passport.serializeUser((user , done)=>{
   console.log('serialise user running .....')
-  
+  console.log(user);
   done(null ,user);
 })
 passport.deserializeUser((user , done)=>{
