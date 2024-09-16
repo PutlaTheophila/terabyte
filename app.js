@@ -37,14 +37,11 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        secure: true, // Secure should be false for local development (no HTTPS)
-        httpOnly: true, // Ensures cookie is not accessible via JavaScripts
     }
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 //Routes
 app.use('/api/v1/news',newsRouter);
 app.use('/api/v1/auth', authRouter);
