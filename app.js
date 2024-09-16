@@ -37,9 +37,9 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        // secure: false, // Secure should be false for local development (no HTTPS)
-        // httpOnly: true, // Ensures cookie is not accessible via JavaScript
-        // sameSite: 'None' 
+        secure: false, // Secure should be false for local development (no HTTPS)
+        httpOnly: true, // Ensures cookie is not accessible via JavaScript
+        sameSite: 'None' 
     }
 }));
 
