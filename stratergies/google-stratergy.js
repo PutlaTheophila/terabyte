@@ -2,19 +2,17 @@ import mongoose from "mongoose";
 import {Strategy} from "passport-google-oauth20";
 import passport from "passport";
 import dotenv from "dotenv";
+import Player from "../models/playerModel"
 
 dotenv.config();
 
 passport.serializeUser(async(user , done)=>{
   console.log('serialise user running .....')
-  console.log(user);
-  const token = await jwt.sign({id:user?.emails[0]}, 'jbfijerbirebfuibr-efkwbfj0-njkfbjkwbhb');
-  res.cookie(token);
-  console.log(token);
   done(null ,user);
 })
-passport.deserializeUser((user , done)=>{
-  console.log('hello...................' , "hello........")
+passport.deserializeUser(async(user , done)=>{
+  console.log('hello...................')
+  console.log(user)
   done(null ,user);
 })
 
