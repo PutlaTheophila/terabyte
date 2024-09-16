@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import {Strategy} from "passport-google-oauth20";
 import passport from "passport";
 import dotenv from "dotenv";
-import Player from "../models/playerModel"
 
 dotenv.config();
 
