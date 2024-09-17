@@ -9,7 +9,7 @@ const developmentErrors = (res , error) =>{
 }
 
 const productionErrors = ( res , error) =>{
-    console.log('welcome to production errors');
+    console.log('welcome to production errorss');
     if(error.isOperational){
         console.log('error is operational');
         res.status(error.statusCode).json({
