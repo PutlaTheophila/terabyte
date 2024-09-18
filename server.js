@@ -13,7 +13,6 @@ mongoose.connect('mongodb+srv://putlat:LjPde0OWQxHLwLrU@cluster0.w4qzg.mongodb.n
         console.log(`app is listening on port ${port}`)
     })
     //connect to sheets
-
 })
 .catch((error)=>{
     console.log(error)
