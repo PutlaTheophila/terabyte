@@ -1,5 +1,5 @@
 const developmentErrors = (res , error) =>{
-    console.log('welcome to development errors section');
+    console.log('welcome to development error section');
     res.status(400).json({
         status: error.statusCode,
         message:error.message,
