@@ -17,7 +17,7 @@ export const getPlayer = asyncErrorHandler(async (req  , res , next)=>{
     console.log(id);
     const player = await Player.find({_id:id});
     res.status(200).json({
-        status:'sucess',
+        status:'success',
         data:{
             player
         }
