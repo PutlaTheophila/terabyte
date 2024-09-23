@@ -17,17 +17,13 @@ import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 
 dotenv.config();
-
-
 app.use(express.json());
 app.use(cookieParser);
-
 app.use(cors({
     origin:"https://sss-vld6.onrender.com",
     methods: 'GET,POST,PUT,DELETE',
     credentials: true
 }));
-
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -65,8 +61,6 @@ app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
     failureRedirect:"https://sss-vld6.onrender.com",
     successRedirect:"https://sss-vld6.onrender.com/nso"
-    
-
 }) , (req ,res)=>{
     res.status(200).json('thank you for signing in')
 })
