@@ -20,11 +20,11 @@ dotenv.config();
 app.use(express.json());
 // app.use(cookieParser);
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // Or specify allowed origins
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*'); // Or specify allowed origins
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//     next();
+// });
 
 app.use(cors({
     origin:"https://sss-vld6.onrender.com",
@@ -43,9 +43,9 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        // secure: false, 
-        // sameSite: 'none',
-        // httpOnly: true
+        secure: true, 
+        sameSite: 'none',
+        httpOnly: true
     }
 }));
 
