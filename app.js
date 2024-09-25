@@ -47,7 +47,7 @@ app.use(passport.session());
 app.use('/api/v1/news',newsRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user',userRoute);
-// app.use('/api/v1/attendance/nso', nsoAttendanceRouter);
+// app.use('/api/v1/attendance/nso', nsoAttendanceRouterr);
 app.use('/api/v1/player', playerRouter);
 app.use('/api/v1/attendance/interiit', interiitAttendanceRouter);
 app.use('/api/v1/tournaments' ,tournamentsRouter)
