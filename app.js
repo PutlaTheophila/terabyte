@@ -19,6 +19,13 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 app.use(express.json());
 // app.use(cookieParser);
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Or specify allowed origins
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+});
+
 app.use(cors({
     origin:"https://sss-vld6.onrender.com",
     methods: 'GET,POST,PUT,DELETE',
@@ -40,6 +47,9 @@ app.use(session({
         // httpOnly: true
     }
 }));
+
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
