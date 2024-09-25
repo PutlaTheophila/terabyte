@@ -18,7 +18,7 @@ import cookieParser from "cookie-parser";
 
 dotenv.config();
 app.use(express.json());
-app.use(cookieParser);
+// app.use(cookieParser);
 app.use(cors({
     origin:"https://sss-vld6.onrender.com",
     methods: 'GET,POST,PUT,DELETE',
