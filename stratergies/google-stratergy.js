@@ -19,7 +19,7 @@ export default passport.use(
     new Strategy({
       clientID :process.env.CLIENT_ID,
       clientSecret:process.env.CLIENT_SECRET,
-      callbackURL: 'https://terabyte-vw3n.onrender.com/api/v1/auth/google/callback',      
+      callbackURL: 'https://terabyte-kvey.onrender.com/api/v1/auth/google/callback',      
       save:true
     },
     async (accessToken, refreshToken, profile, done) => {
