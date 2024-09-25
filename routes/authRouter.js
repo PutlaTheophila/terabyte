@@ -7,5 +7,5 @@ authRouter.route('/')
     .delete(logoutUser)
 authRouter.route('/coordinator')
     .get(findCoordinator)
-
+    
 export default authRouter;
