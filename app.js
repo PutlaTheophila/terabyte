@@ -29,7 +29,8 @@ app.use((req, res, next) => {
 app.use(cors({
     origin:"https://sss-vld6.onrender.com",
     methods: 'GET,POST,PUT,DELETE',
-    credentials: true
+    credentials: true,
+    allowedHeaders:['Authorization','Content-Type','Custom-Header']
 }));
 
 app.use(session({
