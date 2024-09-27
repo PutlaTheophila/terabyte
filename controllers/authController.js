@@ -9,7 +9,7 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     const sessionId = req.sessionID;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
     const session = await Session.findOne({ _id: mongoose.Types.ObjectId(sessionId) });
-    console.log(session);
+    console.log("session",session);
     // console.log('deserializer',deserializer);
 
     if(!req?.user){

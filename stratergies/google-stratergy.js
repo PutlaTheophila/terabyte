@@ -11,7 +11,7 @@ passport.serializeUser(async(user , done)=>{
 })
 passport.deserializeUser(async(user , done)=>{
   console.log('hello...................')
-  console.log(user)
+  // console.log(user)
   done(null ,user);
 })
 
