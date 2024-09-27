@@ -6,8 +6,11 @@ import mongoose from "mongoose";
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     console.log(req.sessionID);
-    const deserializer = passport._deserializers[0];
-    console.log('deserializer',deserializer);
+    const sessionId = req.sessionID;
+    const Session = mongoose.connection.useDb('cineflex').collection('sessions');
+    const session = await Session.findOne({ _id: mongoose.Types.ObjectId(sessionId) });
+    console.log(session);
+    // console.log('deserializer',deserializer);
 
     if(!req?.user){
         return next( new CustomError('user is not logged in // invalid sessionn' , 404));
