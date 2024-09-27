@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
-    console.log('session',req.session ,'passport',req._passport) ;
+    console.log(req);
     const deserializer = passport._deserializers[0];
     console.log('deserializer',deserializer);
 
