@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     // console.log(req.cookies);
-    console.log(req.session);
+    console.log(req.session , req.cookie) ;
     if(!req?.user){
         return next( new CustomError('user is not logged in // invalid sessionn' , 404));
     }
