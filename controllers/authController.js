@@ -7,14 +7,30 @@ import mongoose from "mongoose";
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     console.log(req.sessionID);
     const sessionId = req.sessionID;
-    const Session = mongoose.connection.useDb('cineflex').collection('sessions');
-    const session = await Session.findOne({ _id: sessionId });
-    console.log(session)
+    // const sessionSchema = new mongoose.Schema({}, { strict: false });
+    // const Session = mongoose.model('sessions', sessionSchema);
+//     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
+//     const sessionData = await Session.find({}).toArray();
+//     const db = mongoose.connection.useDb('cineflex');
+// console.log('Connected to database:', db.name);
+//     if (sessionData) {
+//         console.log('Session data:', sessionData);
+//     } else {
+//         console.log('Session not found');
+//     }
+
+const Session = mongoose.connection.useDb('cineflex').collection('movies');
+try {
+    const count = await Session.find({});
+    console.log('Number of sessions:', count);
+} catch (err) {
+    console.error('Error counting sessions:', err);
+}
 
 
-    if (!session) {
-        return next(new CustomError('Invalid session ID or session does not exist', 404));
-    }
+    // if (!session) {
+    //     return next(new CustomError('Invalid session ID or session does not exist', 404));
+    // }
 
     if(!req?.user){
         return next( new CustomError('user is not logged in // invalid sessionn' , 404));
