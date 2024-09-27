@@ -2,10 +2,14 @@ import asyncErrorHandler from "../utils/async-error-handler.js";
 import CustomError from "../utils/customError.js";
 import User from "../models/userModel.js";
 import mongoose from "mongoose";
+import { deserializeUser } from "passport";
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     // console.log(req.cookies);
-    console.log('session',req.session ,'cookie', req.cookie , 'passport',req._passport) ;
+    console.log('session',req.session ,'passport',req._passport) ;
+    const deserializer = passport._deserializers[0];
+    console.log('deserializer',deserializer);
+
     if(!req?.user){
         return next( new CustomError('user is not logged in // invalid sessionn' , 404));
     }
