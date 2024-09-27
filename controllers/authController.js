@@ -8,9 +8,13 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     console.log(req.sessionID);
     const sessionId = req.sessionID;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
-    const session = await Session.findOne({ _id: mongoose.Types.ObjectId(sessionId) });
-    console.log("session",session);
-    // console.log('deserializer',deserializer);
+    const session = await Session.findOne({ _id: sessionId });
+    console.log(session)
+
+
+    if (!session) {
+        return next(new CustomError('Invalid session ID or session does not exist', 404));
+    }
 
     if(!req?.user){
         return next( new CustomError('user is not logged in // invalid sessionn' , 404));
