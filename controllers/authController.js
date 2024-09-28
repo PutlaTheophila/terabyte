@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
-    console.log(req.sessionID);
-    const sessionId = req.sessionID;
+    console.log('session id',req?.sessionID);
+    const sessionId = req?.sessionID;
     let user;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
     try {
@@ -18,7 +18,7 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     if(!user){
         return next( new CustomError('you are not logged in please log in' , 404));
     }
-    console.log('user',req.user);
+    console.log('user',req?.user);
     res.status(400).json({
         status:'success',
         message:'user logged in',
