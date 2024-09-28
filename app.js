@@ -68,7 +68,7 @@ app.get('/' , (req ,res)=>{
     res.status(200).send('hello');
 })
 
-app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
+app.get ('/api/v1/auth/google' , passpokrt.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
     failureRedirect:"https://sss-vld6.onrender.com",
     successRedirect:"https://sss-vld6.onrender.com/nso"
