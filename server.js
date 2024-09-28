@@ -4,9 +4,9 @@ import app from "./app.js"
 import dotenv from 'dotenv'
 dotenv.config()
 
-const PORT = process.env.PORT||3007;
+const PORT = process.env.PORT||3008;
 
-mongoose.connect('mongodb+srv://putlat:LjPde0OWQxHLwLrU@cluster0.w4qzg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(`mongodb+srv://putlatheophila123:${process.env.MONGODB_SECRET}@cluster0.xy2080g.mongodb.net/cineflex?retryWrites=true&w=majority&appName=Cluster0`)
 .then((conn)=>{
     console.log('connected to database');
     //starting app
