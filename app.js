@@ -43,9 +43,9 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        // secure: true, 
-        // sameSite: 'none',
-        // httpOnly: true
+        secure: true, 
+        sameSite: 'none',
+        httpOnly: true
     }
 }));
 
@@ -75,7 +75,5 @@ app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
 }) , (req ,res)=>{
     res.status(200).json('thank you for signing in')
 })
-
-
 app.use(errorHandler);
 export default app;
