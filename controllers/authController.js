@@ -25,7 +25,7 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
         message:'user logged in',
         data:{
             user:user,
-            sessionId
+            id:sessionId
         }
     })
 })
