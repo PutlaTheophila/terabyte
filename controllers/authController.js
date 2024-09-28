@@ -8,7 +8,6 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     console.log('session id',req?.sessionID);
     // console.log('passport user',req.user);
     const sessionId = req?.sessionID;
-    console.log(req)
     let user;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
     try {
