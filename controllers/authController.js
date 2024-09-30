@@ -3,9 +3,19 @@ import CustomError from "../utils/customError.js";
 import User from "../models/userModel.js";
 import mongoose from "mongoose";
 
+
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
-    console.log(req.cookies);
-    if(!req.user){
+    console.log(req.sessionID);
+    console.log(req);
+    const sessionId = req.sessionID;
+    let user;
+    const Session = mongoose.connection.useDb('cineflex').collection('sessions');
+    try {
+        user = await Session.findOne({_id:sessionId}).toArray();
+    } catch (err) {
+        console.error('Error counting sessions:', err);
+    }
+    if(!user){
         return next( new CustomError('user is not logged in // invalid sessionn' , 404));
     }
     console.log(req.user);
@@ -13,7 +23,7 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
         status:'success',
         message:'user logged in',
         data:{
-            user:req.user
+            user:user
         }
     })
 })

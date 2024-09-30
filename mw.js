@@ -14,10 +14,13 @@ export const findIfCoordinator = asyncErrorHandler(async(req ,res , next)=>{
 
 
 export const isLoggedIn = asyncErrorHandler(async (req , res , next)=>{
-    const user = req?.session?.passport
+    const user = req
     if(!user){
         return next(new CustomError('user is not logged in  -- unauthorised to enter this route ' , 404));
     }
     next();
 })
 
+export const isLive = asyncErrorHandler(async(req , res)=>{
+
+})

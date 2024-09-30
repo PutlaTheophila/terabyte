@@ -1,18 +1,19 @@
 import mongoose  from 'mongoose';
 import app from "./app.js"
-export const  port = 5011;
-import "dotenv/config";
+// import "dotenv/config";
 import dotenv from 'dotenv'
 dotenv.config()
 
-mongoose.connect('mongodb+srv://putlat:LjPde0OWQxHLwLrU@cluster0.w4qzg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+const PORT = process.env.PORT||3009;
+
+mongoose.connect(`mongodb+srv://putlatheophila123:${process.env.MONGODB_SECRET}@cluster0.xy2080g.mongodb.net/cineflex?retryWrites=true&w=majority&appName=Cluster0`)
 .then((conn)=>{
-    console.log('connected to database 2');
+    console.log('connected to database');
     //starting app
-    app.listen(process.env.PORT, ()=>{
-        console.log(`app is listening on port ${port}`)
-    })
-    //connect to sheets
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    //connect to sheetss
 })
 .catch((error)=>{
     console.log(error)

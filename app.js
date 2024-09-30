@@ -17,17 +17,21 @@ import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 
 dotenv.config();
-
-
 app.use(express.json());
-app.use(cookieParser);
+// app.use(cookieParser);
+
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*'); // Or specify allowed origins
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//     next();
+// });
 
 app.use(cors({
-    origin:"https://sss-vld6.onrender.com",
+    origin:["https://sss-vld6.onrender.com","https://sports13.netlify.app"],
     methods: 'GET,POST,PUT,DELETE',
-    credentials: true
+    credentials: true,
+    allowedHeaders:['Authorization','Content-Type','Custom-Header']
 }));
-
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -39,11 +43,14 @@ app.use(session({
     }),
     cookie: {
         maxAge: 1000 * 1000,
-        // secure: false, 
+        // secure: true, 
         // sameSite: 'none',
         // httpOnly: true
     }
 }));
+
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -51,18 +58,19 @@ app.use(passport.session());
 app.use('/api/v1/news',newsRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user',userRoute);
-// app.use('/api/v1/attendance/nso', nsoAttendanceRouter);
+// app.use('/api/v1/attendance/nso', nsoAttendanceRouterr);
 app.use('/api/v1/player', playerRouter);
 app.use('/api/v1/attendance/interiit', interiitAttendanceRouter);
 app.use('/api/v1/tournaments' ,tournamentsRouter)
 
 
 app.get('/' , (req ,res)=>{
-    res.status(200).send('hellooo');
+    res.status(200).send('hello');
 })
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
+<<<<<<< HEAD
     // failureRedirect:"https://sss-vld6.onrender.com",
     // successRedirect:"https://sss-vld6.onrender.com/nso"
     failureRedirect:"https://sports13.netlify.app/",
@@ -70,10 +78,12 @@ app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
 
     
 
+=======
+    failureRedirect:"https://sss-vld6.onrender.com",
+    successRedirect:"https://sss-vld6.onrender.com/nso"
+>>>>>>> 36063176a1bde98068a9d48f26d784a9340dbb85
 }) , (req ,res)=>{
     res.status(200).json('thank you for signing in')
 })
-
-
 app.use(errorHandler);
 export default app;
