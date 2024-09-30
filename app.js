@@ -63,8 +63,11 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-    failureRedirect:"https://sss-vld6.onrender.com",
-    successRedirect:"https://sss-vld6.onrender.com/nso"
+    // failureRedirect:"https://sss-vld6.onrender.com",
+    // successRedirect:"https://sss-vld6.onrender.com/nso"
+    failureRedirect:"https://sports13.netlify.app/",
+    successRedirect:"https://sports13.netlify.app/nso"
+
     
 
 }) , (req ,res)=>{
