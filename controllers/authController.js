@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     console.log(req.sessionID);
+    console.log(req);
     const sessionId = req.sessionID;
     let user;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
