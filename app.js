@@ -70,18 +70,10 @@ app.get('/' , (req ,res)=>{
 
 app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
 app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-<<<<<<< HEAD
     // failureRedirect:"https://sss-vld6.onrender.com",
     // successRedirect:"https://sss-vld6.onrender.com/nso"
     failureRedirect:"https://sports13.netlify.app/",
     successRedirect:"https://sports13.netlify.app/nso"
-
-    
-
-=======
-    failureRedirect:"https://sss-vld6.onrender.com",
-    successRedirect:"https://sss-vld6.onrender.com/nso"
->>>>>>> 36063176a1bde98068a9d48f26d784a9340dbb85
 }) , (req ,res)=>{
     res.status(200).json('thank you for signing in')
 })
