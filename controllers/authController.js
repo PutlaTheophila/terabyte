@@ -10,7 +10,7 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     let user;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
     try {
-        user = await Session.find({_id:sessionId}).toArray();
+        user = await Session.findOne({_id:sessionId}).toArray();
     } catch (err) {
         console.error('Error counting sessions:', err);
     }
