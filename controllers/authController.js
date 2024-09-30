@@ -5,26 +5,25 @@ import mongoose from "mongoose";
 
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
-    console.log('session id',req?.sessionID);
-    const sessionId = req?.sessionID;
+    console.log(req.sessionID);
+    const sessionId = req.sessionID;
     let user;
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
     try {
         user = await Session.find({_id:sessionId}).toArray();
-        console.log('Number of sessions:', user);
+        console.log('Number of sessions:', count);
     } catch (err) {
         console.error('Error counting sessions:', err);
     }
     if(!user){
-        return next( new CustomError('you are not logged in please log in' , 404));
+        return next( new CustomError('user is not logged in // invalid sessionn' , 404));
     }
-    console.log('user',req?.user);
+    console.log(req.user);
     res.status(400).json({
         status:'success',
         message:'user logged in',
         data:{
-            user,
-            id:sessionId
+            user:user
         }
     })
 })
