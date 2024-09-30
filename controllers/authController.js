@@ -11,7 +11,6 @@ export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     const Session = mongoose.connection.useDb('cineflex').collection('sessions');
     try {
         user = await Session.find({_id:sessionId}).toArray();
-        console.log('Number of sessions:', count);
     } catch (err) {
         console.error('Error counting sessions:', err);
     }
