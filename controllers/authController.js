@@ -11,6 +11,25 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 
+export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
+    const {code} = req.body;
+    try {
+        const { tokens } = await oauth2Client.getToken(code);
+        oauth2Client.setCredentials(tokens);
+
+        const oauth2 = google.oauth2({
+        auth: oauth2Client,
+        version: "v2",
+        });
+        const { data } = await oauth2.userinfo.get();
+        console.log(data);
+        res.json(data); 
+    } catch (error) {
+        res.status(500).send("Error logging in");
+    }
+})
+
+
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
     console.log(req.sessionID);
     console.log(req);
@@ -65,23 +84,7 @@ export const findCoordinator = asyncErrorHandler(async(req ,res , next)=>{
 })
 
 
-export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
-    const { code } = req.body;
-    try {
-        const { tokens } = await oauth2Client.getToken(code);
-        oauth2Client.setCredentials(tokens);
 
-        const oauth2 = google.oauth2({
-        auth: oauth2Client,
-        version: "v2",
-        });
-        const { data } = await oauth2.userinfo.get();
-        console.log(data);
-        res.json(data); 
-    } catch (error) {
-        res.status(500).send("Error logging in");
-    }
-})
 
 
 
