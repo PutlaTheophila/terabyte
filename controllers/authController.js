@@ -15,21 +15,19 @@ const client = new OAuth2Client(process.env.CLIENT_ID);
 
 
 export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
-    const { token } = req.body;
-    try {
-      const ticket = await client.verifyIdToken({
-        idToken: token,
+    const {credential} = req.body;
+    const ticket = await client.verifyIdToken({
+        idToken: credential,
         audience: process.env.CLIENT_ID,
       });
       const payload = ticket.getPayload();
-      const userId = payload['sub']; // This is the user's unique Google ID
-  
-      // You can now authenticate the user based on their Google ID
-      res.status(200).json({ message: 'User verified', user: payload });
-    } catch (error) {
-      res.status(401).json({ message: 'Token verification failed' });
-    }
-  
+      const userId = payload['sub'];
+      res.cookie('email',payload.email);
+      res.status(200).json({
+        status:'success',
+        message: 'User verified', 
+        user: payload 
+        });
 })
 
 
