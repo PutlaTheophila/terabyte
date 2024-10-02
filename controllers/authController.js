@@ -2,6 +2,13 @@ import asyncErrorHandler from "../utils/async-error-handler.js";
 import CustomError from "../utils/customError.js";
 import User from "../models/userModel.js";
 import mongoose from "mongoose";
+import {google} from "googleapis";
+ 
+const oauth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
 
 
 export const findUser = asyncErrorHandler(async(req ,res , next) =>{
@@ -57,6 +64,26 @@ export const findCoordinator = asyncErrorHandler(async(req ,res , next)=>{
     })
 })
 
+
+export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
+    const { code } = req.body;
+    try {
+        // Exchange code for tokens
+        const { tokens } = await oauth2Client.getToken(code);
+        oauth2Client.setCredentials(tokens);
+
+        // Fetch user data
+        const oauth2 = google.oauth2({
+        auth: oauth2Client,
+        version: "v2",
+        });
+
+        const { data } = await oauth2.userinfo.get();
+        res.json(data);  // Send user data to frontend
+    } catch (error) {
+        res.status(500).send("Error logging in");
+    }
+})
 // wanna add the logout functionality to the app in the nso nav bar
 
 
