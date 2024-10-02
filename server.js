@@ -4,7 +4,7 @@ import app from "./app.js"
 import dotenv from 'dotenv'
 dotenv.config()
 
-const PORT = process.env.PORT||3010;
+const PORT = process.env.PORT||3011;
 
 mongoose.connect(`mongodb+srv://putlatheophila123:${process.env.MONGODB_SECRET}@cluster0.xy2080g.mongodb.net/cineflex?retryWrites=true&w=majority&appName=Cluster0`)
 .then((conn)=>{

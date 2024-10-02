@@ -52,8 +52,8 @@ app.use(cors({
 
 
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 //Routes
 app.use('/api/v1/news',newsRouter);
 app.use('/api/v1/auth', authRouter);

@@ -3,35 +3,33 @@ import CustomError from "../utils/customError.js";
 import User from "../models/userModel.js";
 import mongoose from "mongoose";
 import {google} from "googleapis";
+import {OAuth2Client} from "google-auth-library"
  
-const oauth2Client = new google.auth.OAuth2(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
-  'https://your-app.netlify.app/auth/callback'
-);
+// const oauth2Client = new google.auth.OAuth2(
+//   process.env.CLIENT_ID,
+//   process.env.CLIENT_SECRET,
+//   'https://your-app.netlify.app/auth/callback'
+// );
+const client = new OAuth2Client(process.env.CLIENT_ID);
+
 
 
 export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
-    // const {code} = req.body;
-    // console.log('hello');
-    // try {
-    //     const { tokens } = await oauth2Client.getToken(code);
-    //     oauth2Client.setCredentials(tokens);
-
-    //     const oauth2 = google.oauth2({
-    //     auth: oauth2Client,
-    //     version: "v2",
-    //     });
-    //     const { data } = await oauth2.userinfo.get();
-    //     console.log(data);
-    //     res.json(data); 
-    // } catch (error) {
-    //     res.status(500).send("Error logging in");
-    // }
-    console.log(req.body);
-    res.status(200).json({
-        data:req.body
-    })
+    const { token } = req.body;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      const userId = payload['sub']; // This is the user's unique Google ID
+  
+      // You can now authenticate the user based on their Google ID
+      res.status(200).json({ message: 'User verified', user: payload });
+    } catch (error) {
+      res.status(401).json({ message: 'Token verification failed' });
+    }
+  
 })
 
 
