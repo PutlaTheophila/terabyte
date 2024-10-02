@@ -12,22 +12,26 @@ const oauth2Client = new google.auth.OAuth2(
 
 
 export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
-    const {code} = req.body;
-    console.log('hello');
-    try {
-        const { tokens } = await oauth2Client.getToken(code);
-        oauth2Client.setCredentials(tokens);
+    // const {code} = req.body;
+    // console.log('hello');
+    // try {
+    //     const { tokens } = await oauth2Client.getToken(code);
+    //     oauth2Client.setCredentials(tokens);
 
-        const oauth2 = google.oauth2({
-        auth: oauth2Client,
-        version: "v2",
-        });
-        const { data } = await oauth2.userinfo.get();
-        console.log(data);
-        res.json(data); 
-    } catch (error) {
-        res.status(500).send("Error logging in");
-    }
+    //     const oauth2 = google.oauth2({
+    //     auth: oauth2Client,
+    //     version: "v2",
+    //     });
+    //     const { data } = await oauth2.userinfo.get();
+    //     console.log(data);
+    //     res.json(data); 
+    // } catch (error) {
+    //     res.status(500).send("Error logging in");
+    // }
+    console.log(req.body);
+    res.status(200).json({
+        data:req.body
+    })
 })
 
 
