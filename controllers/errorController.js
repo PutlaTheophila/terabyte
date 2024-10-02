@@ -36,7 +36,7 @@ const errorHandler = (error , req , res , next) =>{
 
     else if(process.env.NODE_ENV === 'production'){
 
-        productionErrors(res , error);
+        developmentErrors(res , error);
     }
 }
 
