@@ -5,13 +5,8 @@ import mongoose from "mongoose";
 import {google} from "googleapis";
 import {OAuth2Client} from "google-auth-library"
  
-// const oauth2Client = new google.auth.OAuth2(
-//   process.env.CLIENT_ID,
-//   process.env.CLIENT_SECRET,
-//   'https://your-app.netlify.app/auth/callback'
-// );
-const client = new OAuth2Client(process.env.CLIENT_ID);
 
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 
 export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
@@ -27,7 +22,7 @@ export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
         status:'success',
         message: 'User verified', 
         user: payload 
-        });
+    });
 })
 
 
