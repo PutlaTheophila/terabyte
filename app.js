@@ -27,7 +27,7 @@ app.use(express.json());
 // });
 
 app.use(cors({
-    origin:["https://sports13.netlify.app","http://localhost:5176"],
+    origin:'https://sports13.netlify.app',
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     allowedHeaders:['Authorization','Content-Type','Custom-Header']
