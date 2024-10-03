@@ -3,7 +3,7 @@ import {findUser, logoutUser , findCoordinator, getGoogleData} from "../controll
 const authRouter = express.Router();
 
 authRouter.route('/')
-    .get(findUser)
+    .post(getGoogleData)
     .delete(logoutUser)
 authRouter.route('/coordinator')
     .get(findCoordinator)
