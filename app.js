@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-    origin:"https://sports13.netlify.app",
+    origin:["https://sports13.netlify.app","http://localhost:5176"],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
     allowedHeaders:['Authorization','Content-Type','Custom-Header']
