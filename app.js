@@ -18,7 +18,6 @@ import cookieParser from "cookie-parser";
 
 dotenv.config();
 app.use(express.json());
-// app.use(cookieParser);
 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*'); // Or specify allowed origins
@@ -32,6 +31,13 @@ app.use(cors({
     credentials: true,
     allowedHeaders:['Authorization','Content-Type','Custom-Header']
 }));
+app.options('*', cors({
+    origin: 'https://sports13.netlify.app',
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+    allowedHeaders: ['Authorization', 'Content-Type', 'Custom-Header'],
+  }));
+  
 
 
 // app.use(session({
