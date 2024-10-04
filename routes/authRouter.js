@@ -3,7 +3,7 @@ import { getGoogleData, isUserLoggedIn} from "../controllers/authController.js"
 import {verifyIdToken} from "../mw.js"
 const authRouter = express.Router();
 
-authRouter.route('/details')
+authRouter.route('/')
     .get(isUserLoggedIn)
 
 authRouter.route('/google/callback')
