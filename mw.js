@@ -3,19 +3,20 @@ import User from "./models/userModel.js";
 import CustomError from "./utils/customError.js";
 
 
-export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
+export const verifyIdToken = asyncErrorHandler(async(req , res ,)=>{
     const cookies = req.headers.cookie;
 
     // Check if cookies exist
     if (!cookies) {
-        return next(new CustomError(401,'Access denied, no cookies provided'))
+        next 
+      return res.status(401).json({ message: 'Access denied, no cookies provided' });
     }
   
     // Manually extract the `authToken` cookie (assuming it's a simple key=value format)
     const token = cookies.split('; ').find(cookie => cookie.startsWith('authToken='));
   
     if (!token) {
-        return next(new CustomError(401,'Access denied, no auth token found'))
+      return res.status(401).json({ message: 'Access denied, no auth token found' });
     }
   
     const authToken = token.split('=')[1];
