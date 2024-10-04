@@ -55,3 +55,27 @@ export const updateTournament = asyncErrorHandler(async(req ,res ,next)=>{
         message:'tournament updated sucessfully'
     })
 })
+
+
+
+// ----------------------------------------------------
+
+export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
+    const {credential} = req.body;
+    console.log(credential);
+    const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: process.env.CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      const userId = payload['sub'];
+      const token = jwt.sign({ payload}, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log('decoded token', decoded);
+      res.setHeader('Set-Cookie', `authToken=${token}; HttpOnly; Secure; SameSite=None; Max-Age=3600`);
+      res.status(200).json({
+        status:'success',
+        message: 'User verified', 
+        user: payload 
+    });
+})
