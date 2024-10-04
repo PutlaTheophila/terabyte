@@ -5,6 +5,7 @@ import CustomError from "./utils/customError.js";
 
 export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
     const cookies = req.headers.cookie;
+    console.log('cookies form mw',cookies);
 
     // Check if cookies exist
     if (!cookies) {
