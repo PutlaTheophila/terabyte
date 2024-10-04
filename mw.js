@@ -3,7 +3,7 @@ import User from "./models/userModel.js";
 import CustomError from "./utils/customError.js";
 
 
-export const verifyIdToken = asyncErrorHandler(async(req , res ,)=>{
+export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
     const cookies = req.headers.cookie;
 
     // Check if cookies exist
