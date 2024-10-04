@@ -12,7 +12,7 @@ const client = new OAuth2Client(process.env.CLIENT_ID);
 
 export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
     const {credential} = req.body;
-    console.log(credential);
+    console.log('token ....',credential);
     const ticket = await client.verifyIdToken({
         idToken: credential,
         audience: process.env.CLIENT_ID,
