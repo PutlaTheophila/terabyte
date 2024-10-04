@@ -9,7 +9,6 @@ export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
 
     // Check if cookies exist
     if (!cookies) {
-        next 
       return res.status(401).json({ message: 'Access denied, no cookies provided' });
     }
   
