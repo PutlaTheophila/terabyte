@@ -32,28 +32,12 @@ app.use(cors({
     allowedHeaders:['Authorization','Content-Type','Custom-Header']
 }));
 app.options('*', cors());
+
+//;';';'
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+//;';';
   
-
-
-// app.use(session({
-//     secret: process.env.SESSION_SECRET,
-//     saveUninitialized: false,
-//     resave: false, 
-//     store: MongoStore.create({
-//         mongoUrl: `mongodb+srv://putlatheophila123:${process.env.MONGODB_SECRET}@cluster0.xy2080g.mongodb.net/cineflex?retryWrites=true&w=majority&appName=Cluster0`,
-//         collectionName: 'sessions', 
-//     }),
-//     cookie: {
-//         maxAge: 1000 * 1000,
-//         // secure: true, 
-//         // sameSite: 'none',
-//         // httpOnly: true
-//     }
-// }));
-
-
-// app.use(passport.initialize());
-// app.use(passport.session());
 //Routes
 app.use('/api/v1/news',newsRouter);
 app.use('/api/v1/auth', authRouter);

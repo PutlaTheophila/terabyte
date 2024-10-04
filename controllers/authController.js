@@ -22,7 +22,14 @@ export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
       const token = jwt.sign({ payload}, process.env.JWT_SECRET, { expiresIn: '1h' });
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       console.log('decoded token', decoded);
-      res.setHeader('Set-Cookie', `authToken=${token}; Secure; SameSite=None; Max-Age=3600`);
+    //   res.setHeader('Set-Cookie', `authToken=${token}; Secure; SameSite=None; Max-Age=3600`);
+    res.cookie("token", token, {
+        maxAge: 2.63e9, // approx 1 month
+        httpOnly: true,
+        secure: true,
+        domain: "https://iitbhilai-sports.netlify.app/",
+        sameSite: "none",
+      });
       res.status(200).json({
         status:'success',
         message: 'User verified', 
