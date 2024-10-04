@@ -4,7 +4,7 @@ import CustomError from "./utils/customError.js";
 import jwt from 'jsonwebtoken';
 
 export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
-    const cookies = req.headers.cookie;
+    const cookies = req.headers;
     console.log('cookies form mw',cookies);
 
     // Check if cookies exist
