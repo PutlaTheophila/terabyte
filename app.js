@@ -31,12 +31,7 @@ app.use(cors({
     credentials: true,
     allowedHeaders:['Authorization','Content-Type','Custom-Header']
 }));
-app.options('*', cors({
-    origin: 'https://iitbhilai-sports.netlify.app',
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type', 'Custom-Header'],
-  }));
+app.options('*', cors());
   
 
 
