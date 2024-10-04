@@ -8,7 +8,7 @@ export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
     console.log('cookies form mw',token);
 
     // Check if cookies exist
-    if (!cookies) {
+    if (!token) {
       return res.status(401).json({ message: 'Access denied, no cookies provided' });
     }
   
