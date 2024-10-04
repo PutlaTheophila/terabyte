@@ -76,6 +76,7 @@ export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
 
 export const stats = asyncErrorHandler(async(req ,res , next)=>{
     console.log(req.params);
+    console.log('user',req.user);
     const {type , sport} = req.params;
     let coordinatorType;
     if (type === 'faculty' || 'faculty-coordinator'){
