@@ -3,7 +3,7 @@ import {findUser, logoutUser , findCoordinator, getGoogleData, isUserLoggedIn} f
 const authRouter = express.Router();
 
 authRouter.route('/')
-    .post(isUserLoggedIn)
+    .get(isUserLoggedIn)
 
 authRouter.route('/google/callback')
     .post(getGoogleData)
