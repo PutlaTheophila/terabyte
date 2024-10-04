@@ -4,7 +4,7 @@ import CustomError from "./utils/customError.js";
 
 
 export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
-    const cookies = req.headers.cookie;
+    const cookies = req.headers;
     console.log('cookies form mw',cookies);
 
     // Check if cookies exist
@@ -18,13 +18,14 @@ export const verifyIdToken = asyncErrorHandler(async(req , res , next)=>{
     if (!token) {
       return res.status(401).json({ message: 'Access denied, no auth token found' });
     }
-  
     const authToken = token.split('=')[1];
     console.log('authToken', authToken);
+    console.log(authToken);
 
     const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
     console.log(decoded);
     // Attach the decoded token data to the request (can be accessed in routes)
     req.user = decoded;
-    next();
+    // next();
+    res.json(decoded);
 })
