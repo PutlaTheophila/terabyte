@@ -34,7 +34,7 @@ export const isUserLoggedIn = asyncErrorHandler(async(req ,res,next)=>{
     const user = req.user;
     if(!user) next(new CustomError('user is not logged in...'))
     res.status(200).json({
-        status:'sucess',
+        status:'success',
         user
     })
 }) 

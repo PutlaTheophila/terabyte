@@ -21,6 +21,7 @@ export const verifyIdToken = asyncErrorHandler(async(req , res)=>{
     const authToken = token.split('=')[1];
 
     const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
+    console.log(decoded);
     // Attach the decoded token data to the request (can be accessed in routes)
     req.user = decoded;
     next();
