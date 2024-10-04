@@ -20,6 +20,7 @@ export const verifyIdToken = asyncErrorHandler(async(req , res ,)=>{
     }
   
     const authToken = token.split('=')[1];
+    console.log('authToken', authToken);
 
     const decoded = jwt.verify(authToken, process.env.JWT_SECRET);
     console.log(decoded);

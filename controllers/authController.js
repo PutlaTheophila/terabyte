@@ -31,7 +31,7 @@ export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
 })
 
 export const isUserLoggedIn = asyncErrorHandler(async(req ,res,next)=>{
-    const user = req.user;
+    const user = req?.user;
     if(!user) next(new CustomError(404,'user is not logged in...'))
     res.status(200).json({
         status:'success',

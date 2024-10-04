@@ -4,7 +4,7 @@ import {verifyIdToken} from "../mw.js"
 const authRouter = express.Router();
 
 authRouter.route('/details')
-    .get(verifyIdToken,isUserLoggedIn)
+    .get(isUserLoggedIn)
 
 authRouter.route('/google/callback')
     .post(getGoogleData)
