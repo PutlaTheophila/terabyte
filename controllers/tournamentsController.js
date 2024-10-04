@@ -23,6 +23,7 @@ export const getAllTournaments = asyncErrorHandler(async (req ,res , next) =>{
     console.log("hello from get all tournaments")
     console.log('cookies', req.headers.cookie);
     console.log(modifiedTournaments)
+    console.log('user on request object',req.user)
     res.status(200).json({
         status:'sucess',
         tournaments:modifiedTournaments
