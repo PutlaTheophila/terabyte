@@ -1,5 +1,5 @@
 import express from "express";
-import {findUser, logoutUser , findCoordinator, getGoogleData, isUserLoggedIn} from "../controllers/authController.js"
+import { getGoogleData, isUserLoggedIn} from "../controllers/authController.js"
 const authRouter = express.Router();
 
 authRouter.route('/')
