@@ -25,18 +25,33 @@ app.use(express.json());
 //     next();
 // });
 
+// app.use(cors({
+//     origin:'https://iitbhilai-sports.netlify.app',
+//     methods: 'GET,POST,PUT,DELETE',
+//     credentials: true,
+//     allowedHeaders:['Authorization','Content-Type','Custom-Header']
+// }));
 app.use(cors({
-    origin:'https://iitbhilai-sports.netlify.app',
+    origin: 'https://iitbhilai-sports.netlify.app', // Ensure this is the correct origin
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
-    allowedHeaders:['Authorization','Content-Type','Custom-Header']
+    allowedHeaders: ['Authorization', 'Content-Type', 'Custom-Header']
 }));
-app.options('*', cors({
-    origin: 'https://iitbhilai-sports.netlify.app',
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type', 'Custom-Header'],
-  }));
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://iitbhilai-sports.netlify.app');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, Custom-Header');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(204); // Send an empty response for preflight checks
+});
+// This will handle preflight requests
+
+// app.options('*', cors({
+//     origin: 'https://iitbhilai-sports.netlify.app',
+//     methods: 'GET,POST,PUT,DELETE',
+//     credentials: true,
+//     allowedHeaders: ['Authorization', 'Content-Type', 'Custom-Header'],
+//   }));
   
 
 
