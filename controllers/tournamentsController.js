@@ -21,6 +21,7 @@ export const getAllTournaments = asyncErrorHandler(async (req ,res , next) =>{
         modifiedTournaments.push({ 'id' : tournament._id ,'name' : tournament.name , 'location' : tournament.location , 'participants' :tournament.participants , 'sport' :tournament.sport , 'status' : tournament.status , 'date' : tournament.date} )
     })
     console.log("hello from get all tournaments")
+    console.log('cookies', req.headers.cookie);
     console.log(modifiedTournaments)
     res.status(200).json({
         status:'sucess',
