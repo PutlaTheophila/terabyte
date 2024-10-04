@@ -22,7 +22,7 @@ export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
       const token = jwt.sign({ payload}, process.env.JWT_SECRET, { expiresIn: '1h' });
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       console.log('decoded token', decoded);
-      res.setHeader('Set-Cookie', `authToken=${token}; Secure; SameSite=None; Max-Age=3600`);
+    //   res.setHeader('Set-Cookie', `authToken=${token}; Secure; SameSite=None; Max-Age=3600`);
       res.cookie('authToken',token , {
         httpOnly: true,       // Makes it inaccessible via JS (optional, if you don't need it on the frontend)
         secure: true,         // Set to true for HTTPS, false for HTTP (use false for local dev without HTTPS)
