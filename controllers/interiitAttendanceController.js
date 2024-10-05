@@ -142,28 +142,36 @@ export const stats = asyncErrorHandler(async(req ,res , next)=>{
 })
 
 
-export const findCoordinatorType = asyncErrorHandler(async (req , res ,next)=>{
-    const email =  req?.user?.payload?.email;
+export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
+    const email = req?.user?.payload?.email;
+
+    // Find the player by email
     const player = await Player.findOne({ email });
-    console.log(email,player);
-    if (!player) return (next ( new CustomError(404 ,'you are not authorized to access this route')))
+    console.log(email, player);
+
+    // If no player is found, return a 404 error
+    if (!player) return next(new CustomError(404, 'You are not authorized to access this route'));
 
     // Check the player's type
     const isStudentCoordinator = player.type.includes('student-coordinator');
     const isStudentSecretary = player.type.includes('student-secretary');
-    const isFacultySecretary = player.type.includes('faculty-secretary');
     const isFacultyCoordinator = player.type.includes('faculty-coordinator');
+    const isFacultySecretary = player.type.includes('faculty-secretary');
 
-    if(!isStudentCoordinator || !isStudentSecretary || !isFacultySecretary || !isFacultyCoordinator )
-        return next(new CustomError('404' , 'you are not authorized to access this route'))
-    
-    // Prepare the response
+    // If the player is not any of these roles, return a 404 unauthorized error
+    if (!(isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary)) {
+        return next(new CustomError(404, 'You are not authorized to access this route'));
+    }
+
+    // Prepare the response for student roles
     const response = {
         isStudentCoordinator: isStudentCoordinator,
         isStudentSecretary: isStudentSecretary,
         coordinatorSports: isStudentCoordinator || isStudentSecretary ? player.coordinatorFor : []
     };
+
+    // Return the response
     res.status(200).json({
-        data:response
+        data: response
     });
-})
+});
