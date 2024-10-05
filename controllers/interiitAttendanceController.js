@@ -159,14 +159,15 @@ export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
     const isFacultySecretary = player.type.includes('faculty-secretary');
 
     // Determine the render value based on the player's type
-    const render = isStudentCoordinator || isStudentSecretary ? true : false;
+    const render = isStudentCoordinator || isStudentSecretary;
 
     // Prepare the response
     const response = {
-        render,  // true if student-coordinator or student-secretary, false otherwise
-        coordinatorSports: isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary 
-            ? player.coordinatorFor 
-            : []  // List of sports the player coordinates for, if applicable
+        render,  // true for student roles, false for faculty roles
+        coordinatorSports: (isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary)
+            ? player.coordinatorFor
+            : [],  // List of sports the player coordinates for, if applicable
+        coordinatorOf: player.coordinatorFor // Include the array of sports the player is coordinator of
     };
 
     // Return the response
@@ -174,4 +175,5 @@ export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
         data: response
     });
 });
+
 
