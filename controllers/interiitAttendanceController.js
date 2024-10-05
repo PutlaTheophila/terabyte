@@ -164,6 +164,6 @@ export const findCoordinatorType = asyncErrorHandler(async (req , res ,next)=>{
         coordinatorSports: isStudentCoordinator || isStudentSecretary ? player.coordinatorFor : []
     };
     res.status(200).json({
-        data:mark-attendance-navbar
+        data:response
     });
 })
