@@ -1,10 +1,10 @@
 import Player from "../models/playerModel.js";
-import User from "../models/userModel.js";
+
 import asyncErrorHandler from "../utils/async-error-handler.js";
 import CustomError from "../utils/customError.js";
 
 export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
-    const userEmail =  req?.session?.passport?.user?.emails[0]?.value || 'putlatheophila1@gmail.com'
+    const userEmail =  req?.user?.payload?.email;
     console.log(userEmail);
     const coordinator = await User.findOne({email:userEmail});
     if(!coordinator){
@@ -46,8 +46,40 @@ export const postAttendance = asyncErrorHandler(async(req ,res , next)=>{
     })
 })
 
+
+export const getPlayersForAttendance = asyncErrorHandler(async(req ,res ,next)=>{
+    const email = req.user.payload.email;
+    const coordinator = await Player.findOne({ email });
+
+    if (!coordinator) {
+        throw new Error('Coordinator not found');
+    }
+
+    if (!coordinator.type.includes('student-coordinator') && !coordinator.type.includes('faculty-coordinator')) {
+        throw new Error('Player is not a coordinator for any sport');
+    }
+
+    const sportsCoordinated = coordinator.coordinatorFor;
+    const players = await Player.find({
+        sport: { $in: sportsCoordinated } 
+    }, 'name id sport'); 
+
+    // Group players by sport
+    const groupedPlayers = {};
+    sportsCoordinated.forEach(sport => {
+        groupedPlayers[sport] = players
+            .filter(player => player.sport.includes(sport))
+            .map(player => ({ name: player.name, id: player.id })); 
+    });
+    res.status(200).json({
+        status:'success',
+        players:groupedPlayers
+    })
+
+})
+
 export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
-    const userEmail =  req?.session?.passport?.user?.emails[0]?.value || 'putlatheophila1@gmail.com';
+    const userEmail =  req?.user?.payload?.email;
     if(!userEmail){
         return next(new CustomError('user is not logged in please log in or try to login with institue email '))
     }
@@ -65,12 +97,10 @@ export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
     res.status(200).json({
         status:'success',
         data:{
-            totalDays:totalAttendance,
+            totalDays : totalAttendance,
             player
         }
-    })
-        
-
+    })        
 })
 
 
@@ -78,6 +108,7 @@ export const stats = asyncErrorHandler(async(req ,res , next)=>{
     console.log(req.params);
     console.log('user',req.user);
     const {type , sport} = req.params;
+
     let coordinatorType;
     if (type === 'faculty' || 'faculty-coordinator'){
          coordinatorType = 'faculty-coordinator';
@@ -89,12 +120,15 @@ export const stats = asyncErrorHandler(async(req ,res , next)=>{
     const users = await Player.find({type:{$in:[coordinatorType.toString(), type.toString()]} ,sport:sport})
     console.log(users);
 
+
     const coordinator = await Player.findOne({type:coordinatorType , sport:sport})
     const totalDays = coordinator?.attendance?.length;
     let data=[];
+
     users.map((user)=>{
         data.push({'id':user.id  , 'name' : user.name , 'attendance':user.attendance.length}) 
     })
+
     console.log(data);
     res.status(200).json({
         status:'success',
@@ -103,4 +137,26 @@ export const stats = asyncErrorHandler(async(req ,res , next)=>{
             data
         }
     })
+})
+
+
+export const findCoordinatorType = asyncErrorHandler(async (req , res)=>{
+    const email =  req?.user?.payload?.email;
+    const player = await Player.findOne({ email });
+
+    if (!player) {
+        return res.status(404).json({ message: 'Player not found.' });
+    }
+
+    // Check the player's type
+    const isStudentCoordinator = player.type.includes('student-coordinator');
+    const isStudentSecretary = player.type.includes('student-secretary');
+    
+    // Prepare the response
+    const response = {
+        isStudentCoordinator: isStudentCoordinator,
+        isStudentSecretary: isStudentSecretary,
+        coordinatorSports: isStudentCoordinator || isStudentSecretary ? player.coordinatorFor : []
+    };
+    res.status(200).json({response});
 })

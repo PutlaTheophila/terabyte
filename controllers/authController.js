@@ -1,6 +1,5 @@
 import asyncErrorHandler from "../utils/async-error-handler.js";
 import CustomError from "../utils/customError.js";
-import User from "../models/userModel.js";
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
 import {OAuth2Client} from "google-auth-library";
@@ -34,6 +33,13 @@ export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
         user: payload 
     });
 })
+
+// export const coordinator = asyncErrorHandler(async(req , res, next)=>{
+//     const email = req?.user?.payload?.email;
+//     const user = await User.findOne(email);
+//     if(!user) return next( new CustomError(401,'you dnt have access to this route , you are not a coordinator' ));
+//     if()
+// })
 
 export const isUserLoggedIn = asyncErrorHandler(async(req ,res,next)=>{
     const user = req?.user;

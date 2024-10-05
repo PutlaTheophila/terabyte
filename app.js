@@ -2,7 +2,6 @@ import express from "express"
 const app = express();
 import newsRouter from "./routes/newsRouter.js";
 import authRouter from "./routes/authRouter.js";
-import userRoute from "./routes/usersRoute.js";
 // import nsoAttendanceRouter from "./routes/nsoAttendanceRoute.js";
 import errorHandler from "./controllers/errorController.js";
 import cors from "cors";
@@ -41,7 +40,6 @@ app.use(cookieParser());
 //Routes
 app.use('/api/v1/news',newsRouter);
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/user',userRoute);
 // app.use('/api/v1/attendance/nso', nsoAttendanceRouterr);
 app.use('/api/v1/player', playerRouter);
 app.use('/api/v1/attendance/interiit', interiitAttendanceRouter);
