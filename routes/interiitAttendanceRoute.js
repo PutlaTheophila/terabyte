@@ -14,6 +14,6 @@ interiitAttendanceRouter.route('/stats/:type/:sport')
 
 
 interiitAttendanceRouter.route('/mark-attendance-navbar')
-    .get(findCoordinatorType)
+    .get(verifyIdToken,findCoordinatorType)
 
 export default interiitAttendanceRouter;
