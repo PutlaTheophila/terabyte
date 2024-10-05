@@ -32,26 +32,6 @@ export const getAllPlayers = asyncErrorHandler(async(req ,res , next)=>{
     })
 })
 
-// export const updatePlayer = asyncErrorHandler(async (req ,res , next)=>{
-//     const { email } = req.body; 
-//     const updatedData = req.body; 
-//         // Find the player by email and update
-//     const updatedPlayer = await Player.findOneAndUpdate(
-//         { email: email }, // Find by email
-//         updatedData, // Update data
-//         {
-//             new: true, // Return the updated document
-//             runValidators: true, // Ensure the new data adheres to the schema's validation
-//         }
-//     )
-//     const user = await Player.find({email})
-//     if (!updatedPlayer || !user) return next(new CustomError('no user found  with this email' , 200));
-//     res.status(200).json({
-//         status:'success',
-//         data:user
-//     })
-// })
-
 export const updatePlayer = (id , data) =>{
     return asyncErrorHandler(async (req , res , next) =>{
         const updatedPlayer = await Player.findOneAndUpdate(
@@ -70,3 +50,4 @@ export const updatePlayer = (id , data) =>{
         })
     })
 }
+

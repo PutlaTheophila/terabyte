@@ -145,7 +145,7 @@ export const stats = asyncErrorHandler(async(req ,res , next)=>{
 export const findCoordinatorType = asyncErrorHandler(async (req , res ,next)=>{
     const email =  req?.user?.payload?.email;
     const player = await Player.findOne({ email });
-
+    console.log(email,player);
     if (!player) return (next ( new CustomError(404 ,'you are not authorized to access this route')))
 
     // Check the player's type
