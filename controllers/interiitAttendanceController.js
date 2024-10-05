@@ -158,16 +158,15 @@ export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
     const isFacultyCoordinator = player.type.includes('faculty-coordinator');
     const isFacultySecretary = player.type.includes('faculty-secretary');
 
-    // If the player is not any of these roles, return a 404 unauthorized error
-    if (!(isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary)) {
-        return next(new CustomError(404, 'You are not authorized to access this route'));
-    }
+    // Determine the render value based on the player's type
+    const render = isStudentCoordinator || isStudentSecretary ? true : false;
 
-    // Prepare the response for student roles
+    // Prepare the response
     const response = {
-        isStudentCoordinator: isStudentCoordinator,
-        isStudentSecretary: isStudentSecretary,
-        coordinatorSports: isStudentCoordinator || isStudentSecretary ? player.coordinatorFor : []
+        render,  // true if student-coordinator or student-secretary, false otherwise
+        coordinatorSports: isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary 
+            ? player.coordinatorFor 
+            : []  // List of sports the player coordinates for, if applicable
     };
 
     // Return the response
@@ -175,3 +174,4 @@ export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
         data: response
     });
 });
+
