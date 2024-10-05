@@ -81,6 +81,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async(req ,res ,next)=>
 
 export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
     const userEmail =  req?.user?.payload?.email;
+    console.log(userEmail);
     if(!userEmail){
         return next(new CustomError('user is not logged in please log in or try to login with institue email '))
     }
