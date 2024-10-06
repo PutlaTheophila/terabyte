@@ -255,3 +255,34 @@ export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
 });
 
 
+export const getPlayerForViewAttendance = async (req, res, next) => {
+    // Extract the email from the request payload
+    const email = req?.user?.payload?.email;
+
+    // Find the player by email
+    const playerFromDb = await Player.findOne({ email });
+
+    // Check if the player exists
+    if (!playerFromDb) {
+        return res.status(404).json({
+            status: 'error',
+            message: `Player with email ${email} not found`
+        });
+    }
+
+    // Extract the player's sports and type
+    const { sport, type } = playerFromDb;
+
+    // Determine the render key based on the player's type
+    const render = type.includes('faculty') || 
+                   type.includes('faculty-coordinator') || 
+                   type.includes('faculty-secretary');
+
+    // Return the response with the player's sports and render key
+    return res.status(200).json({
+        status: 'success',
+        sports: sport, // The sports field from the player document
+        render
+    });
+};
+
