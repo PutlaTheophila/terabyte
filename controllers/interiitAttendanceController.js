@@ -90,18 +90,16 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         });
     }
 
-    // Group players by sport (though sport is already filtered, keeping it for structure)
-    const groupedPlayers = {
-        [sport]: players.map(player => ({ name: player.name, id: player.id })) // Return only name and id
-    };
+    // Log the players list for debugging
+    console.log(players);
 
-    console.log(groupedPlayers);
-    // Return the grouped players
+    // Return the list of players (array of objects with name and id)
     res.status(200).json({
         status: 'success',
-        players: groupedPlayers
+        players: players // This will return the array of players directly
     });
 });
+
 
 
 
