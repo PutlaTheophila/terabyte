@@ -27,6 +27,10 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 
 
 
+import Player from '../models/playerModel'; // Adjust the import path as necessary
+import CustomError from '../utils/customError'; // Adjust the import path as necessary
+import asyncErrorHandler from '../middleware/asyncErrorHandler'; // Adjust the import path as necessary
+
 export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     const data = req.body; // Get the array of students from the request body
     const email = req.user.payload.email; // Get the email from the user's payload
@@ -38,7 +42,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     // Iterate over each student in the request body
     const updatedStudents = await Promise.all(
         data.map(async (student) => {
-            // Find the player in the database
+            // Find the player in the database using the student ID
             const playerFromDb = await Player.findOne({ id: student.id });
 
             // Check if the player exists
@@ -78,6 +82,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
         updatedStudents // Optionally return the updated student documents
     });
 });
+
 
 
 
