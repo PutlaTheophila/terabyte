@@ -324,3 +324,66 @@ export const getPlayerForViewAttendance = async (req, res, next) => {
     });
 };
 
+
+
+export const getPlayersAttendanceBySport = asyncErrorHandler(async (req, res, next) => {
+    const email = req?.user?.payload?.email;
+    const sport = req?.params?.sport;
+
+    if (!email) {
+        return next(new CustomError('User is not logged in, please log in with your institute email', 401));
+    }
+
+    if (!sport) {
+        return next(new CustomError('Please specify a sport', 400));
+    }
+
+    // Find the coordinator based on the email, ensuring they are not secretaries
+    const coordinator = await Player.findOne({
+        email: email,
+        sport: sport,
+        'type': { $in: ['student-coordinator', 'faculty-coordinator'] },
+        'type': { $nin: ['student-secretary', 'faculty-secretary'] }
+    });
+
+    if (!coordinator) {
+        return next(new CustomError('Coordinator not found or does not have the required permissions', 403));
+    }
+
+    // Determine if the coordinator is for students or faculty
+    const isStudentCoordinator = coordinator.type.includes('student-coordinator');
+    const isFacultyCoordinator = coordinator.type.includes('faculty-coordinator');
+
+    // Define the appropriate type to query players
+    let playerType;
+    if (isStudentCoordinator) {
+        playerType = 'student';
+    } else if (isFacultyCoordinator) {
+        playerType = 'faculty';
+    } else {
+        return next(new CustomError('Invalid coordinator type', 400));
+    }
+
+    // Find all players of the appropriate type and sport
+    const players = await Player.find({
+        type: playerType,
+        sport: sport
+    });
+
+    if (!players || players.length === 0) {
+        return next(new CustomError(`No players found for the sport: ${sport}`, 404));
+    }
+
+    // Format the response to include player name, ID, and attendance length for the specific sport
+    const playerData = players.map(player => ({
+        name: player.name,
+        id: player._id,
+        attendanceLength: player.attendance.get(sport)?.length || 0
+    }));
+
+    // Return the list of players and their attendance data
+    return res.status(200).json({
+        status: 'success',
+        data: playerData
+    });
+});
