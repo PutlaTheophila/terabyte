@@ -95,6 +95,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         [sport]: players.map(player => ({ name: player.name, id: player.id })) // Return only name and id
     };
 
+    console.log(groupedPlayers);
     // Return the grouped players
     res.status(200).json({
         status: 'success',
