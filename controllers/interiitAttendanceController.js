@@ -155,33 +155,70 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
 
 
+export const getPlayerAttendance = async (req, res, next) => {
+    const email = req?.user?.payload?.email;
+    const sport = req?.params?.sport;
 
-
-export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
-    const userEmail =  req?.user?.payload?.email;
-    console.log(userEmail);
-    if(!userEmail){
-        return next(new CustomError('user is not logged in please log in or try to login with institue email '))
+    if (!email) {
+        return next(new CustomError('User is not logged in, please log in with your institute email', 401));
     }
-    console.log(userEmail);
-    const player = await Player.findOne({email:userEmail})
-    if(!player) return next(new CustomError('player does not exist , try contacting developer if your name is missing' , 404))
-    console.log(player)
-    let coordinatorType;
-    if (player.type === 'faculty' || 'faculty-coordinator') coordinatorType = 'faculty-coordinator';
-    if(player.type === 'student' || 'student-coordinator') coordinatorType = 'student-coordinator';
 
-    const coordinator = await Player.findOne({type:coordinatorType , sport:player.sport.toString()})
-    const totalAttendance = coordinator.attendance;
-    if(!player) return next(new CustomError('invalid user / try to login using institute email ' , 404))
-    res.status(200).json({
-        status:'success',
-        data:{
-            totalDays : totalAttendance,
-            player
+    if (!sport) {
+        return next(new CustomError('Please specify a sport', 400));
+    }
+
+    const playerFromDb = await Player.findOne({ email });
+
+    if (!playerFromDb) {
+        return next(new CustomError('Player does not exist, try contacting the developer if your name is missing', 404));
+    }
+
+    // Check if the player has attendance for the specific sport
+    const attendanceForSport = playerFromDb.attendance.get(sport);
+
+    if (!attendanceForSport) {
+        return next(new CustomError(`No attendance records found for the sport: ${sport}`, 404));
+    }
+
+    // Identify if the player is a student or faculty
+    const isStudent = playerFromDb.type.includes('student');
+    const isFaculty = playerFromDb.type.includes('faculty');
+
+    // Define coordinator type
+    let coordinatorType;
+    if (isStudent) {
+        coordinatorType = 'student-coordinator';
+    } else if (isFaculty) {
+        coordinatorType = 'faculty-coordinator';
+    }
+
+    // Find the appropriate coordinator who is not a secretary
+    const coordinator = await Player.findOne({
+        type: coordinatorType,
+        sport: sport,
+        'type': { $nin: ['student-secretary', 'faculty-secretary'] } // Exclude secretaries
+    });
+
+    if (!coordinator) {
+        return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
+    }
+
+    // Get the length of the attendance for the coordinator
+    const coordinatorAttendanceLength = coordinator.attendance.get(sport)?.length || 0;
+
+    // Return the attendance for the specific sport along with the coordinator's attendance length
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            player: playerFromDb.name,
+            sport: sport,
+            attendance: attendanceForSport,
+            coordinatorAttendanceLength: coordinatorAttendanceLength
         }
-    })        
-})
+    });
+};
+
+
 //
 
 export const stats = asyncErrorHandler(async(req ,res , next)=>{

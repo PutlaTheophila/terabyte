@@ -1,12 +1,12 @@
 import express from "express"
 const interiitAttendanceRouter = express.Router();
-import { findCoordinatorType, getPlayerForViewAttendance, getPlayersForAttendance, personalAttendance, postAttendance, stats } from "../controllers/interiitAttendanceController.js"
+import { findCoordinatorType, getPlayerForViewAttendance, getPlayersForAttendance, getPlayerAttendance, postAttendance, stats } from "../controllers/interiitAttendanceController.js"
 import { sportAttendance } from "../controllers/interiitAttendanceController.js";
 import {verifyIdToken} from "../mw.js"
 
-interiitAttendanceRouter.route('/')
+interiitAttendanceRouter.route('/:sport')
     .post(verifyIdToken,postAttendance)
-    .get(verifyIdToken,personalAttendance)
+    .get(verifyIdToken,getPlayerAttendance)
 
 interiitAttendanceRouter.route('/players/:sport')
     .get(verifyIdToken,getPlayersForAttendance)
