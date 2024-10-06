@@ -57,6 +57,11 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         return next(new CustomError(404, 'Coordinator not found'));
     }
 
+    // Check if the sport is present in the coordinator's 'coordinatorFor' field
+    if (!coordinator.coordinatorFor.includes(sport)) {
+        return next(new CustomError(403, `You are not authorized to manage attendance for ${sport}`));
+    }
+
     // Check if the user is a coordinator or secretary for students or faculty
     const isStudentCoordinator = coordinator.type.includes('student-coordinator');
     const isStudentSecretary = coordinator.type.includes('student-secretary');
@@ -99,6 +104,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         players: players // This will return the array of players directly
     });
 });
+
 
 
 
