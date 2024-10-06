@@ -4,7 +4,7 @@ import { findCoordinatorType, getPlayerForViewAttendance, getPlayersForAttendanc
 import { sportAttendance } from "../controllers/interiitAttendanceController.js";
 import {verifyIdToken} from "../mw.js"
 
-interiitAttendanceRouter.route('/:sport')
+interiitAttendanceRouter.route('/')
     .post(verifyIdToken,postAttendance)
     .get(verifyIdToken,getPlayerAttendance)
 
