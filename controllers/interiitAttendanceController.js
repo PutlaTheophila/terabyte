@@ -47,37 +47,62 @@ export const postAttendance = asyncErrorHandler(async(req ,res , next)=>{
 })
 
 
-export const getPlayersForAttendance = asyncErrorHandler(async(req ,res ,next)=>{
-    const email = req.user.payload.email;
+export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) => {
+    const email = req?.user?.payload?.email;
+    const sport = req?.params?.sport;
+    console.log(email,sport);
     const coordinator = await Player.findOne({ email });
-    console.log('email',email);
 
+    // Check if coordinator exists
     if (!coordinator) {
-        throw new Error('Coordinator not found');
+        return next(new CustomError(404, 'user not logged in please login '));
     }
 
-    if (!coordinator.type.includes('student-coordinator') && !coordinator.type.includes('faculty-coordinator')) {
-        throw new Error('Player is not a coordinator for any sport');
+    // Check if the player is a coordinator or secretary
+    const isStudentCoordinator = coordinator.type.includes('student-coordinator');
+    const isStudentSecretary = coordinator.type.includes('student-secretary');
+    const isFacultyCoordinator = coordinator.type.includes('faculty-coordinator');
+    const isFacultySecretary = coordinator.type.includes('faculty-secretary');
+
+    // If the user is neither a student nor faculty coordinator or secretary
+    if (!(isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary)) {
+        return next(new CustomError(403, 'You are not authorized to access this route'));
     }
 
-    const sportsCoordinated = coordinator.coordinatorFor;
+    // Determine the roles to filter by
+    let roleFilter = [];
+    if (isStudentCoordinator || isStudentSecretary) {
+        roleFilter = ['student-player'];
+    } else if (isFacultyCoordinator || isFacultySecretary) {
+        roleFilter = ['faculty-player'];
+    }
+
+    // Find players matching the role and sport
     const players = await Player.find({
-        sport: { $in: sportsCoordinated } 
-    }, 'name id sport'); 
+        sport: sport,
+        type: { $in: roleFilter }
+    }, 'name id sport type'); // Return only specific fields
 
-    // Group players by sport
-    const groupedPlayers = {};
-    sportsCoordinated.forEach(sport => {
-        groupedPlayers[sport] = players
-            .filter(player => player.sport.includes(sport))
-            .map(player => ({ name: player.name, id: player.id })); 
-    });
+    // Check if no players were found
+    if (players.length === 0) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'No players found for the specified sport and role'
+        });
+    }
+
+    // Group players by sport (even though there's only one sport)
+    const groupedPlayers = {
+        [sport]: players.map(player => ({ name: player.name, id: player.id }))
+    };
+
+    // Return the grouped players
     res.status(200).json({
-        status:'success',
-        players:groupedPlayers
-    })
+        status: 'success',
+        players: groupedPlayers
+    });
+});
 
-})
 
 export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
     const userEmail =  req?.user?.payload?.email;

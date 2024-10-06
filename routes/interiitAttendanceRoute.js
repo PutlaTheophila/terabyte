@@ -7,7 +7,7 @@ import {verifyIdToken} from "../mw.js"
 interiitAttendanceRouter.route('/')
     .post(verifyIdToken,postAttendance)
     .get(verifyIdToken,personalAttendance)
-interiitAttendanceRouter.route('/post-attendance')
+interiitAttendanceRouter.route('/players')
     .get(verifyIdToken,getPlayersForAttendance)
 interiitAttendanceRouter.route('/stats/:type/:sport')
     .get(verifyIdToken,stats)
