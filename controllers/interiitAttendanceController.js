@@ -26,10 +26,18 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 })
 
 
+import Player from '../models/playerModel'; // Adjust the import path as necessary
+import CustomError from '../utils/customError'; // Adjust the import path as necessary
+import asyncErrorHandler from '../middleware/asyncErrorHandler'; // Adjust the import path as necessary
+
 export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     const data = req.body; // Get the array of students from the request body
     const email = req.user.payload.email; // Get the email from the user's payload
-    console.log(req.body);
+    console.log('Received attendance data:', req.body);
+
+    // Get today's date in YYYY-MM-DD format
+    const attendanceDate = new Date().toISOString().split('T')[0]; 
+
     // Iterate over each student in the request body
     const updatedStudents = await Promise.all(
         data.map(async (student) => {
@@ -46,8 +54,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
                 return next(new CustomError(403, `You are not authorized to mark attendance for ${student.sport}`));
             }
 
-            // Check if the attendance for the given sport and date already exists
-            const attendanceDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            // Find the attendance record for the specified sport
             const sportAttendanceRecord = playerFromDb.attendance.find(record => record.sport === student.sport);
 
             if (sportAttendanceRecord) {
@@ -74,6 +81,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
         updatedStudents // Optionally return the updated student documents
     });
 });
+
 
 
 
