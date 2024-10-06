@@ -48,50 +48,49 @@ export const postAttendance = asyncErrorHandler(async(req ,res , next)=>{
 
 
 export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) => {
-    const email = req?.user?.payload?.email;
-    const sport = req?.params?.sport;
-    console.log(email,sport);
+    const email = req.user.payload.email; // Extract the email from the user payload
+    const sport = req.params.sport; // Get the sport from the URL params
     const coordinator = await Player.findOne({ email });
 
-    // Check if coordinator exists
+    // Check if the coordinator exists
     if (!coordinator) {
-        return next(new CustomError(404, 'user not logged in please login '));
+        return next(new CustomError(404, 'Coordinator not found'));
     }
 
-    // Check if the player is a coordinator or secretary
+    // Check if the user is a coordinator or secretary for students or faculty
     const isStudentCoordinator = coordinator.type.includes('student-coordinator');
     const isStudentSecretary = coordinator.type.includes('student-secretary');
     const isFacultyCoordinator = coordinator.type.includes('faculty-coordinator');
     const isFacultySecretary = coordinator.type.includes('faculty-secretary');
 
-    // If the user is neither a student nor faculty coordinator or secretary
+    // If the user is neither a coordinator nor a secretary
     if (!(isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary)) {
         return next(new CustomError(403, 'You are not authorized to access this route'));
     }
 
-    // Determine the roles to filter by
+    // Define the role filter for querying the players based on coordinator or secretary type
     let roleFilter = [];
     if (isStudentCoordinator || isStudentSecretary) {
-        roleFilter = ['student-player'];
+        roleFilter = ['student'];
     } else if (isFacultyCoordinator || isFacultySecretary) {
-        roleFilter = ['faculty-player'];
+        roleFilter = ['faculty'];
     }
 
-    // Find players matching the role and sport
+    // Find players that match the role filter and the specified sport
     const players = await Player.find({
         sport: sport,
-        type: { $in: roleFilter }
-    }, 'name id sport type'); // Return only specific fields
+        type: { $in: roleFilter } // Filter by student or faculty players
+    }, 'name id sport type'); // Only return the relevant fields (name, id, sport, and type)
 
-    // Check if no players were found
+    // Check if any players were found
     if (players.length === 0) {
         return res.status(404).json({
             status: 'fail',
-            message: 'No players found for the specified sport and role'
+            message: `No ${roleFilter.join('/')} players found for the specified sport (${sport})`
         });
     }
 
-    // Group players by sport (even though there's only one sport)
+    // Group players by sport (though sport is already filtered, keeping it for structure)
     const groupedPlayers = {
         [sport]: players.map(player => ({ name: player.name, id: player.id }))
     };
@@ -102,6 +101,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         players: groupedPlayers
     });
 });
+
 
 
 export const personalAttendance = asyncErrorHandler(async(req ,res , next)=>{
