@@ -80,7 +80,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
     const players = await Player.find({
         sport: sport,
         type: { $in: roleFilter } // Filter by student or faculty players
-    }, 'name id sport type'); // Only return the relevant fields (name, id, sport, and type)
+    }, 'name id'); // Only return the relevant fields (name and id)
 
     // Check if any players were found
     if (players.length === 0) {
@@ -92,7 +92,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
     // Group players by sport (though sport is already filtered, keeping it for structure)
     const groupedPlayers = {
-        [sport]: players.map(player => ({ name: player.name, id: player.id }))
+        [sport]: players.map(player => ({ name: player.name, id: player.id })) // Return only name and id
     };
 
     // Return the grouped players
@@ -101,6 +101,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         players: groupedPlayers
     });
 });
+
 
 
 
