@@ -26,25 +26,55 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 })
 
 
-export const postAttendance = asyncErrorHandler(async(req ,res , next)=>{
-    const data = req.body;
-    console.log(data);
+export const postAttendance = asyncErrorHandler(async (req, res, next) => {
+    const data = req.body; // Get the array of students from the request body
+    const email = req.user.payload.email; // Get the email from the user's payload
 
+    // Iterate over each student in the request body
     const updatedStudents = await Promise.all(
-        data.map((student) => {
-            const studentFromDb = Player.findOneAndUpdate(
-                { id: student.id },  // Find by student id
-                { $addToSet: { attendance: '2023-09-11' } },  // Add the new attendance date if not already present
-                { new: true, upsert: false } 
-            );
-            return studentFromDb;
+        data.map(async (student) => {
+            // Find the player in the database
+            const playerFromDb = await Player.findOne({ id: student.id });
+
+            // Check if the player exists
+            if (!playerFromDb) {
+                return next(new CustomError(404, `Player with ID ${student.id} not found`));
+            }
+
+            // Check if the user's email is a coordinator for the specified sport
+            if (!playerFromDb.coordinatorFor.includes(student.sport)) {
+                return next(new CustomError(403, `You are not authorized to mark attendance for ${student.sport}`));
+            }
+
+            // Check if the attendance for the given sport and date already exists
+            const attendanceDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            const sportAttendanceRecord = playerFromDb.attendance.find(record => record.sport === student.sport);
+
+            if (sportAttendanceRecord) {
+                // Check if the attendance date is already recorded for the sport
+                if (!sportAttendanceRecord.dates.includes(attendanceDate)) {
+                    // Add the attendance date if not already present
+                    sportAttendanceRecord.dates.push(attendanceDate);
+                }
+            } else {
+                // If no record exists for that sport, create one
+                playerFromDb.attendance.push({ sport: student.sport, dates: [attendanceDate] });
+            }
+
+            // Save the updated player document
+            await playerFromDb.save();
+
+            return playerFromDb; // Return the updated player document
         })
     );
+
     res.status(200).json({
-        status:'success',
-        message:'attendance posted successfully'
-    })
-})
+        status: 'success',
+        message: 'Attendance posted successfully',
+        updatedStudents // Optionally return the updated student documents
+    });
+});
+
 
 
 export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) => {
