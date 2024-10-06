@@ -203,20 +203,21 @@ export const getPlayerAttendance = async (req, res, next) => {
         return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
     }
 
-    // Get the length of the attendance for the coordinator
-    const coordinatorAttendanceLength = coordinator.attendance.get(sport)?.length || 0;
+    // Get the attendance array for the coordinator for the specific sport
+    const coordinatorAttendance = coordinator.attendance.get(sport) || [];
 
-    // Return the attendance for the specific sport along with the coordinator's attendance length
+    // Return the attendance for the specific sport along with the coordinator's attendance array
     return res.status(200).json({
         status: 'success',
         data: {
             player: playerFromDb.name,
             sport: sport,
             attendance: attendanceForSport,
-            coordinatorAttendanceLength: coordinatorAttendanceLength
+            coordinatorAttendance: coordinatorAttendance // Array of dates for coordinator
         }
     });
 };
+
 
 
 //
