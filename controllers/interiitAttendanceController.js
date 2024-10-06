@@ -27,15 +27,13 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 
 
 
-
-
 export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     const data = req.body; // Get the array of students from the request body
     const posterEmail = req.user.payload.email; // Get the email of the attendance poster
     console.log('Received attendance data:', req.body);
 
     // Get today's date in YYYY-MM-DD format
-    const attendanceDate = new Date().toISOString().split('T')[0]; 
+    const attendanceDate = new Date().toISOString().split('T')[0];
 
     // Find the attendance poster in the database
     const posterFromDb = await Player.findOne({ email: posterEmail });
@@ -63,18 +61,18 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
                 return next(new CustomError(403, `You are not authorized to mark attendance for ${student.sport}`));
             }
 
-            // Find the attendance record for the specified sport
-            const sportAttendanceRecord = playerFromDb.attendance.find(record => record.sport === student.sport);
-
-            if (sportAttendanceRecord) {
+            // Check if the attendance record exists for the specified sport
+            if (playerFromDb.attendance.has(student.sport)) {
+                // Get the dates for the sport
+                const dates = playerFromDb.attendance.get(student.sport);
                 // Check if the attendance date is already recorded for the sport
-                if (!sportAttendanceRecord.dates.includes(attendanceDate)) {
+                if (!dates.includes(attendanceDate)) {
                     // Add the attendance date if not already present
-                    sportAttendanceRecord.dates.push(attendanceDate);
+                    dates.push(attendanceDate);
                 }
             } else {
-                // If no record exists for that sport, create one
-                playerFromDb.attendance.push({ sport: student.sport, dates: [attendanceDate] });
+                // If no record exists for that sport, create a new entry
+                playerFromDb.attendance.set(student.sport, [attendanceDate]);
             }
 
             // Save the updated player document
