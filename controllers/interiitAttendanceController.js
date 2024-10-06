@@ -29,7 +29,7 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     const data = req.body; // Get the array of students from the request body
     const email = req.user.payload.email; // Get the email from the user's payload
-
+    console.log(req.body);
     // Iterate over each student in the request body
     const updatedStudents = await Promise.all(
         data.map(async (student) => {
