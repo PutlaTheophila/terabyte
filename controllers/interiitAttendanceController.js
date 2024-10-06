@@ -26,9 +26,6 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 })
 
 
-import Player from '../models/playerModel'; // Adjust the import path as necessary
-import CustomError from '../utils/customError'; // Adjust the import path as necessary
-import asyncErrorHandler from '../middleware/asyncErrorHandler'; // Adjust the import path as necessary
 
 export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     const data = req.body; // Get the array of students from the request body
