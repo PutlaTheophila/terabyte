@@ -31,11 +31,19 @@ export const sportAttendance = asyncErrorHandler (async(req ,res ,next)=>{
 
 export const postAttendance = asyncErrorHandler(async (req, res, next) => {
     const data = req.body; // Get the array of students from the request body
-    const email = req.user.payload.email; // Get the email from the user's payload
+    const posterEmail = req.user.payload.email; // Get the email of the attendance poster
     console.log('Received attendance data:', req.body);
 
     // Get today's date in YYYY-MM-DD format
     const attendanceDate = new Date().toISOString().split('T')[0]; 
+
+    // Find the attendance poster in the database
+    const posterFromDb = await Player.findOne({ email: posterEmail });
+    
+    // Check if the poster exists
+    if (!posterFromDb) {
+        return next(new CustomError(404, `Poster with email ${posterEmail} not found`));
+    }
 
     // Iterate over each student in the request body
     const updatedStudents = await Promise.all(
@@ -48,8 +56,10 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
                 return next(new CustomError(404, `Player with ID ${student.id} not found`));
             }
 
-            // Check if the user's email is a coordinator for the specified sport
-            if (!playerFromDb.coordinatorFor.includes(student.sport)) {
+            // Check if the poster is a coordinator for the specified sport
+            const isSportCoordinator = posterFromDb.coordinatorFor.includes(student.sport);
+
+            if (!isSportCoordinator) {
                 return next(new CustomError(403, `You are not authorized to mark attendance for ${student.sport}`));
             }
 
@@ -80,6 +90,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
         updatedStudents // Optionally return the updated student documents
     });
 });
+
 
 
 
