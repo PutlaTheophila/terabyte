@@ -98,7 +98,7 @@ const playerSchema = new mongoose.Schema({
     },
     attendance: {
         type: Map,
-        of: [Date],
+        of: [String],
         default: {}
     },
     type: [{
