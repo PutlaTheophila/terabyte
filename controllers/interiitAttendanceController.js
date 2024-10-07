@@ -165,9 +165,6 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
 
 
-import Player from '../models/playerModel'; // Adjust the import based on your directory structure
-import CustomError from '../utils/customError'; // Adjust the import based on your directory structure
-
 export const getPlayerAttendance = async (req, res, next) => {
     const email = req?.user?.payload?.email;
     const sport = req?.params?.sport;
