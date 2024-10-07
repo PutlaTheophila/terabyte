@@ -13,7 +13,6 @@ mongoose.connect(`mongodb+srv://theosports7:${process.env.MONGODB_SECRET}@sports
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server is running on port ${PORT}`);
       });
-    //connect to sheetss
 })
 .catch((error)=>{
     console.log(error)
