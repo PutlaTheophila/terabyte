@@ -69,6 +69,9 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
                 if (!dates.includes(attendanceDate)) {
                     // Add the attendance date if not already present
                     dates.push(attendanceDate);
+                } else {
+                    // If the date is already present, return a message (optional)
+                    console.log(`Attendance date ${attendanceDate} is already recorded for player ${student.id} in sport ${student.sport}.`);
                 }
             } else {
                 // If no record exists for that sport, create a new entry
@@ -88,6 +91,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
         updatedStudents // Optionally return the updated student documents
     });
 });
+
 
 
 
