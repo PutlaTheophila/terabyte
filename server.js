@@ -17,7 +17,7 @@ mongoose.connect(`mongodb+srv://theosports7:${process.env.MONGODB_SECRET}@sports
 .catch((error)=>{
     console.log(error)
 })
-
+//
 
 
 
