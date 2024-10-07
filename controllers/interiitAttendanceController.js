@@ -103,6 +103,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
 
 
 
+
 export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) => {
     const email = req.user.payload.email; // Extract the email from the user payload
     const sport = req.params.sport; // Get the sport from the URL params
