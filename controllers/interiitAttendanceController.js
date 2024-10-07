@@ -204,12 +204,13 @@ export const getPlayerAttendance = async (req, res, next) => {
     }
 
     // Find the appropriate coordinator who is not a secretary
-    const coordinator = await Player.findOne({
+    let coordinator = await Player.find({
         type: { $elemMatch: { $eq: coordinatorType } }, // Use $elemMatch for array fields
         sport: sport,
         type: { $nin: ['student-secretary', 'faculty-secretary'] } // Exclude secretaries
     });
-
+    console.log(coordinator);
+    coordinator = coordinator[0];
     // Check if the coordinator exists
     if (!coordinator) {
         return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
