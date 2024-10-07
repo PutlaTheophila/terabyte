@@ -17,7 +17,9 @@ const playerSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, 'Please enter your email']
+        required: [true, 'Please enter your email'],
+        unique:true
+
     },
     attendance: {
         type: Map,
@@ -27,7 +29,8 @@ const playerSchema = new mongoose.Schema({
     type: [{
         type: String,
         enum: ['student', 'faculty', 'student-coordinator', 'faculty-coordinator', 'student-secretary', 'faculty-secretary'],
-        required: true
+        required: true,
+        default:['student']
     }],
     sport: [{
         type: String,

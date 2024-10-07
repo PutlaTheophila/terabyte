@@ -6,7 +6,7 @@ dotenv.config()
 
 const PORT = process.env.PORT||3013;
 
-mongoose.connect(`mongodb+srv://putlatheophila123:${process.env.MONGODB_SECRET}@cluster0.xy2080g.mongodb.net/cineflex?retryWrites=true&w=majority&appName=Cluster0`)
+mongoose.connect(`mongodb+srv://theosports7:${process.env.MONGODB_SECRET}@sports.9mjtk.mongodb.net/?retryWrites=true&w=majority&appName=sports`)
 .then((conn)=>{
     console.log('connected to database');
     //starting app
