@@ -209,6 +209,7 @@ export const getPlayerAttendance = async (req, res, next) => {
         sport: sport,
         type: { $nin: ['student-secretary', 'faculty-secretary'] }, // Exclude secretaries
     });
+    console.log(coordinator);
 
     // Ensure that only one coordinator is returned
     if (!coordinator) {
