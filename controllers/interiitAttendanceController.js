@@ -165,6 +165,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
 
 
+
 export const getPlayerAttendance = async (req, res, next) => {
     const email = req?.user?.payload?.email;
     const sport = req?.params?.sport;
@@ -179,61 +180,56 @@ export const getPlayerAttendance = async (req, res, next) => {
         return next(new CustomError('Please specify a sport', 400));
     }
 
-    try {
-        // Find the player in the database
-        const playerFromDb = await Player.findOne({ email });
+    // Find the player in the database
+    const playerFromDb = await Player.findOne({ email });
 
-        // Check if the player exists
-        if (!playerFromDb) {
-            return next(new CustomError('Player does not exist, try contacting the developer if your name is missing', 404));
-        }
-
-        // Check for attendance records for the specified sport
-        const attendanceForSport = playerFromDb.attendance[sport]; // Use [] to access the property
-
-        // Check if attendance records are found
-        if (!attendanceForSport) {
-            return next(new CustomError(`No attendance records found for the sport: ${sport}`, 404));
-        }
-
-        // Determine coordinator type based on player type
-        let coordinatorType;
-        if (playerFromDb.type.includes('student-coordinator')) {
-            coordinatorType = 'student-coordinator';
-        } else if (playerFromDb.type.includes('faculty-coordinator')) {
-            coordinatorType = 'faculty-coordinator';
-        }
-
-        // Find the appropriate coordinator who is not a secretary
-        const coordinator = await Player.findOne({
-            sport: sport,
-            type: coordinatorType,
-        });
-
-        // Ensure that only one coordinator is returned
-        if (!coordinator) {
-            return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
-        }
-
-        // Get the attendance array for the coordinator for the specific sport
-        const coordinatorAttendance = coordinator.attendance[sport] || []; // Use [] to access the property
-
-        // Return the attendance for the specific sport along with the coordinator's attendance array
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                player: playerFromDb.name,
-                sport: sport,
-                attendance: attendanceForSport,
-                coordinatorAttendance: coordinatorAttendance, // Array of dates for coordinator
-            },
-        });
-    } catch (error) {
-        // Handle any unexpected errors
-        return next(new CustomError('An error occurred while retrieving attendance data', 500));
+    // Check if the player exists
+    if (!playerFromDb) {
+        return next(new CustomError('Player does not exist, try contacting the developer if your name is missing', 404));
     }
-};
 
+    // Check for attendance records for the specified sport
+    const attendanceForSport = playerFromDb.attendance.get(sport);
+
+    // Check if attendance records are found
+    if (!attendanceForSport) {
+        return next(new CustomError(`No attendance records found for the sport: ${sport}`, 404));
+    }
+
+    // Determine coordinator type based on player type
+    let coordinatorType;
+    if (playerFromDb.type.includes('student')) {
+        coordinatorType = 'student-coordinator';
+    } else if (playerFromDb.type.includes('faculty')) {
+        coordinatorType = 'faculty-coordinator';
+    }
+
+    // Find the appropriate coordinator who is not a secretary
+    const coordinator = await Player.findOne({
+        type: { $elemMatch: { $eq: coordinatorType } }, // Check for coordinator type
+        sport: sport,
+        type: { $nin: ['student-secretary', 'faculty-secretary'] }, // Exclude secretaries
+    });
+
+    // Ensure that only one coordinator is returned
+    if (!coordinator) {
+        return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
+    }
+
+    // Get the attendance array for the coordinator for the specific sport
+    const coordinatorAttendance = coordinator.attendance.get(sport) || [];
+
+    // Return the attendance for the specific sport along with the coordinator's attendance array
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            player: playerFromDb.name,
+            sport: sport,
+            attendance: attendanceForSport,
+            coordinatorAttendance: coordinatorAttendance, // Array of dates for coordinator
+        },
+    });
+};
 
 
 
