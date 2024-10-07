@@ -34,7 +34,6 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
 
     // Get today's date in YYYY-MM-DD format
     const attendanceDate = new Date().toISOString().split('T')[0];
-    console.log(attendanceDate);
 
     // Find the attendance poster in the database
     const posterFromDb = await Player.findOne({ email: posterEmail });
@@ -70,8 +69,11 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
             // Get the dates for the sport
             const dates = playerFromDb.attendance.get(student.sport);
 
+            // Ensure dates are in 'YYYY-MM-DD' format for comparison
+            const formattedDates = dates.map(date => new Date(date).toISOString().split('T')[0]);
+
             // Check if the attendance date is already recorded for the sport
-            if (!dates.includes(attendanceDate)) {
+            if (!formattedDates.includes(attendanceDate)) {
                 // Add the attendance date if not already present
                 dates.push(attendanceDate);
             } else {
@@ -92,6 +94,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
         updatedStudents // Optionally return the updated student documents
     });
 });
+
 
 
 
