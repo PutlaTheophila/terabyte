@@ -25,7 +25,7 @@ export const getGoogleData = asyncErrorHandler(async(req ,res)=>{
         httpOnly: true,       // Makes it inaccessible via JS (optional, if you don't need it on the frontend)
         secure: true,         // Set to true for HTTPS, false for HTTP (use false for local dev without HTTPS)
         sameSite: 'None',     // Allow cross-origin cookies
-        maxAge: 1200000,      // Cookie expiration in milliseconds
+        maxAge: 600000,      // Cookie expiration in milliseconds
       });
       res.status(200).json({
         status:'success',
