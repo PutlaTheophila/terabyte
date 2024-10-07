@@ -34,6 +34,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
 
     // Get today's date in YYYY-MM-DD format
     const attendanceDate = new Date().toISOString().split('T')[0];
+    console.log(attendanceDate);
 
     // Find the attendance poster in the database
     const posterFromDb = await Player.findOne({ email: posterEmail });
