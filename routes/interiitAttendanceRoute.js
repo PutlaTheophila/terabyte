@@ -11,7 +11,7 @@ interiitAttendanceRouter.route('/players/:sport')
     .get(verifyIdToken,getPlayersForAttendance)
 
 interiitAttendanceRouter.route('/get-attendance/:sport')
-    .get(verifyIdToken,getPlayerAttendance)
+    .get(getPlayerAttendance)
 
 interiitAttendanceRouter.route('/stats/:type/:sport')
     .get(verifyIdToken,stats)

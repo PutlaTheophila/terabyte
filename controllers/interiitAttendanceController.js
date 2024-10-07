@@ -167,8 +167,8 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
 
 export const getPlayerAttendance = async (req, res, next) => {
-    const email = req?.user?.payload?.email;
-    const sport = req?.params?.sport;
+    const email = req?.user?.payload?.email || 'putlat@iitbhilai.ac.in';
+    const sport = req?.params?.sport || 'football';
 
     // Check if the user is logged in
     if (!email) {
@@ -206,11 +206,13 @@ export const getPlayerAttendance = async (req, res, next) => {
 
     // Find the appropriate coordinator who is not a secretary
     const coordinator = await Player.findOne({
-        type: { $elemMatch: { $eq: coordinatorType } }, // Check for coordinator type
-        sport: sport,
-        type: { $nin: ['student-secretary', 'faculty-secretary'] }, // Exclude secretaries
+        sport: sport, // Match the sport
+        type: { 
+            $all: [coordinatorType],  // Match the coordinator type (student-coordinator or faculty-coordinator)
+            $nin: ['student-secretary', 'faculty-secretary']  // Exclude secretaries
+        }
     });
-
+    console.log(coordinator);
     // Ensure that only one coordinator is returned
     if (!coordinator) {
         return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
