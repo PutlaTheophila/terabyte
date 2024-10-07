@@ -167,8 +167,8 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
 
 export const getPlayerAttendance = async (req, res, next) => {
-    const email = req?.user?.payload?.email || 'putlat@iitbhilai.ac.in';
-    const sport = req?.params?.sport || 'football';
+    const email = req?.user?.payload?.email ;
+    const sport = req?.params?.sport;
 
     // Check if the user is logged in
     if (!email) {
