@@ -238,40 +238,57 @@ export const getPlayerAttendance = async (req, res, next) => {
 
 //
 
-export const stats = asyncErrorHandler(async(req ,res , next)=>{
+export const stats = asyncErrorHandler(async(req, res, next) => {
     console.log(req.params);
-    console.log('user',req.user);
-    const {type , sport} = req.params;
+    console.log('user', req.user);
+    
+    const { type, sport } = req.params;
 
     let coordinatorType;
-    if (type === 'faculty' || 'faculty-coordinator'){
+    if (type === 'faculty' || type === 'faculty-coordinator') {
          coordinatorType = 'faculty-coordinator';
     }
-    if(type === 'student' || 'student-coordinator');{
+    if (type === 'student' || type === 'student-coordinator') {
         coordinatorType = 'student-coordinator';
     }
-    
-    const users = await Player.find({type:{$in:[coordinatorType.toString(), type.toString()]} ,sport:sport})
-    console.log(users);
 
+    // Find all users of the given type and sport
+    const users = await Player.find({
+        type: { $in: [coordinatorType, type] },
+        sport: sport
+    });
 
-    const coordinator = await Player.findOne({type:coordinatorType , sport:sport})
-    const totalDays = coordinator?.attendance?.length;
-    let data=[];
+    // Find the sport coordinator, but ensure they are not a secretary
+    const coordinator = await Player.findOne({
+        type: coordinatorType,
+        sport: sport,
+        type: { $nin: ['faculty-secretary', 'student-secretary'] }
+    });
 
-    users.map((user)=>{
-        data.push({'id':user.id  , 'name' : user.name , 'attendance':user.attendance.length}) 
-    })
+    // Calculate total attendance for the coordinator's specific sport
+    const totalDays = coordinator?.attendance?.get(sport)?.length || 0;
 
-    console.log(data);
+    let data = [];
+
+    // Map through the users to calculate each player's attendance length for the sport
+    users.forEach(user => {
+        const playerAttendanceLength = user.attendance?.get(sport)?.length || 0;
+        data.push({ 
+            id: user.id, 
+            name: user.name, 
+            attendance: playerAttendanceLength 
+        });
+    });
+
     res.status(200).json({
-        status:'success',
-        data:{
-            totalDays,
-            data
+        status: 'success',
+        data: {
+            totalDays, // total attendance days for the coordinator
+            data      // array of player attendance
         }
-    })
-})
+    });
+});
+
 
 
 export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
