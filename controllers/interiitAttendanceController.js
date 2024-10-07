@@ -208,6 +208,7 @@ export const getPlayerAttendance = async (req, res, next) => {
         sport: sport,
         'type': { $nin: ['student-secretary', 'faculty-secretary'] } // Exclude secretaries
     });
+    console.log(coordinator);
 
     if (!coordinator) {
         return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));

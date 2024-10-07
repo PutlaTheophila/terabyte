@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const sportsEnum = {
-    student: ['football', 'basketball', 'cricket', 'volleyball', 'table-tennis', 'athletics'],
+    student: ['football', 'basketball', 'cricket', 'volleyball', 'athletics','table-tennis','badminton'],
     faculty: ['tennis', 'badminton', 'chess', 'cricket', 'volleyball', 'athletics']
 };
 

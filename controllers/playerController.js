@@ -51,3 +51,33 @@ export const updatePlayer = (id , data) =>{
     })
 }
 
+// Controller function to add multiple players
+export const addMultiplePlayers = async (req, res) => {
+    try {
+        const { players, sport } = req.body; // Expecting { players: [...], sport: 'football' }
+
+        if (!Array.isArray(players) || players.length === 0) {
+            return res.status(400).json({ message: 'Players array is required and cannot be empty.' });
+        }
+
+        const playerDocuments = players.map(player => ({
+            name: player.name,
+            id: player.id,
+            email: player.email,
+            sport: [sport], // Specify the sport
+            type: ['student'], // Set type to 'student'
+            coordinatorFor: [] // Initialize as empty
+        }));
+
+        // Insert all player documents into the database
+        const createdPlayers = await Player.insertMany(playerDocuments);
+
+        return res.status(201).json({ message: 'Players created successfully', data: createdPlayers });
+    } catch (error) {
+        console.error('Error creating players:', error);
+        return res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+};
+
+
+

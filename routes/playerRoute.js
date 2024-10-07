@@ -1,6 +1,6 @@
 import express from "express"
 const playerRouter = express.Router();
-import { createPlayer, getAllPlayers, getPlayer, updatePlayer } from "../controllers/playerController.js";
+import { addMultiplePlayers, createPlayer, getAllPlayers, getPlayer, updatePlayer } from "../controllers/playerController.js";
 
 playerRouter.route('/')
     .post(createPlayer)
@@ -8,4 +8,7 @@ playerRouter.route('/')
     .patch(updatePlayer)
 playerRouter.route('/:id')
     .get(getAllPlayers)
+
+playerRouter.route('/add')
+    .post(addMultiplePlayers)
 export default playerRouter;
