@@ -169,47 +169,48 @@ export const getPlayerAttendance = async (req, res, next) => {
     const email = req?.user?.payload?.email;
     const sport = req?.params?.sport;
 
+    // Check if the user is logged in
     if (!email) {
         return next(new CustomError('User is not logged in, please log in with your institute email', 401));
     }
 
+    // Check if a sport is specified
     if (!sport) {
         return next(new CustomError('Please specify a sport', 400));
     }
 
+    // Find the player in the database
     const playerFromDb = await Player.findOne({ email });
 
+    // Check if the player exists
     if (!playerFromDb) {
         return next(new CustomError('Player does not exist, try contacting the developer if your name is missing', 404));
     }
 
-    // Check if the player has attendance for the specific sport
+    // Check for attendance records for the specified sport
     const attendanceForSport = playerFromDb.attendance.get(sport);
 
+    // Check if attendance records are found
     if (!attendanceForSport) {
         return next(new CustomError(`No attendance records found for the sport: ${sport}`, 404));
     }
 
-    // Identify if the player is a student or faculty
-    const isStudent = playerFromDb.type.includes('student');
-    const isFaculty = playerFromDb.type.includes('faculty');
-
-    // Define coordinator type
+    // Determine coordinator type based on player type
     let coordinatorType;
-    if (isStudent) {
+    if (playerFromDb.type.includes('student')) {
         coordinatorType = 'student-coordinator';
-    } else if (isFaculty) {
+    } else if (playerFromDb.type.includes('faculty')) {
         coordinatorType = 'faculty-coordinator';
     }
 
     // Find the appropriate coordinator who is not a secretary
     const coordinator = await Player.findOne({
-        type: coordinatorType,
+        type: { $elemMatch: { $eq: coordinatorType } }, // Use $elemMatch for array fields
         sport: sport,
-        'type': { $nin: ['student-secretary', 'faculty-secretary'] } // Exclude secretaries
+        type: { $nin: ['student-secretary', 'faculty-secretary'] } // Exclude secretaries
     });
-    console.log(coordinator);
 
+    // Check if the coordinator exists
     if (!coordinator) {
         return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
     }
@@ -228,6 +229,7 @@ export const getPlayerAttendance = async (req, res, next) => {
         }
     });
 };
+
 
 
 
