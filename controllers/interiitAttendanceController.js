@@ -165,6 +165,9 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
 
 
 
+import Player from '../models/playerModel'; // Adjust the import based on your directory structure
+import CustomError from '../utils/customError'; // Adjust the import based on your directory structure
+
 export const getPlayerAttendance = async (req, res, next) => {
     const email = req?.user?.payload?.email;
     const sport = req?.params?.sport;
@@ -204,14 +207,13 @@ export const getPlayerAttendance = async (req, res, next) => {
     }
 
     // Find the appropriate coordinator who is not a secretary
-    let coordinator = await Player.find({
-        type: { $elemMatch: { $eq: coordinatorType } }, // Use $elemMatch for array fields
+    const coordinator = await Player.findOne({
+        type: { $elemMatch: { $eq: coordinatorType } }, // Check for coordinator type
         sport: sport,
-        type: { $nin: ['student-secretary', 'faculty-secretary'] } // Exclude secretaries
+        type: { $nin: ['student-secretary', 'faculty-secretary'] }, // Exclude secretaries
     });
-    console.log(coordinator);
-    coordinator = coordinator[0];
-    // Check if the coordinator exists
+
+    // Ensure that only one coordinator is returned
     if (!coordinator) {
         return next(new CustomError(`Coordinator for the sport: ${sport} not found`, 404));
     }
@@ -226,10 +228,11 @@ export const getPlayerAttendance = async (req, res, next) => {
             player: playerFromDb.name,
             sport: sport,
             attendance: attendanceForSport,
-            coordinatorAttendance: coordinatorAttendance // Array of dates for coordinator
-        }
+            coordinatorAttendance: coordinatorAttendance, // Array of dates for coordinator
+        },
     });
 };
+
 
 
 
