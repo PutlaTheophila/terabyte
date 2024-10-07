@@ -61,21 +61,21 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
                 return next(new CustomError(403, `You are not authorized to mark attendance for ${student.sport}`));
             }
 
-            // Check if the attendance record exists for the specified sport
-            if (playerFromDb.attendance.has(student.sport)) {
-                // Get the dates for the sport
-                const dates = playerFromDb.attendance.get(student.sport);
-                // Check if the attendance date is already recorded for the sport
-                if (!dates.includes(attendanceDate)) {
-                    // Add the attendance date if not already present
-                    dates.push(attendanceDate);
-                } else {
-                    // If the date is already present, return a message (optional)
-                    console.log(`Attendance date ${attendanceDate} is already recorded for player ${student.id} in sport ${student.sport}.`);
-                }
+            // Initialize the attendance array if it does not exist for the sport
+            if (!playerFromDb.attendance.has(student.sport)) {
+                playerFromDb.attendance.set(student.sport, []);
+            }
+
+            // Get the dates for the sport
+            const dates = playerFromDb.attendance.get(student.sport);
+
+            // Check if the attendance date is already recorded for the sport
+            if (!dates.includes(attendanceDate)) {
+                // Add the attendance date if not already present
+                dates.push(attendanceDate);
             } else {
-                // If no record exists for that sport, create a new entry
-                playerFromDb.attendance.set(student.sport, [attendanceDate]);
+                // If the date is already present, log a message (optional)
+                console.log(`Attendance date ${attendanceDate} is already recorded for player ${student.id} in sport ${student.sport}.`);
             }
 
             // Save the updated player document
@@ -91,6 +91,7 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
         updatedStudents // Optionally return the updated student documents
     });
 });
+
 
 
 
