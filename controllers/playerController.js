@@ -15,7 +15,19 @@ export const createPlayer = asyncErrorHandler(async(req , res , next)=>{
 export const getPlayer = asyncErrorHandler(async (req  , res , next)=>{    
     const  id = req.params.id
     console.log(id);
-    const player = await Player.find({_id:id});
+    const player = await Player.findOne({id:id});
+    res.status(200).json({
+        status:'success',
+        data:{
+            player
+        }
+    })
+})
+
+
+export const deletePlayer = asyncErrorHandler(async (req  , res , next)=>{    
+    const  email = req.body.email;
+    const player = await Player.findOneAndDelete({email});
     res.status(200).json({
         status:'success',
         data:{
@@ -32,24 +44,24 @@ export const getAllPlayers = asyncErrorHandler(async(req ,res , next)=>{
     })
 })
 
-export const updatePlayer = (id , data) =>{
-    return asyncErrorHandler(async (req , res , next) =>{
-        const updatedPlayer = await Player.findOneAndUpdate(
-            { id: id }, // Find by email
-            data, // Update data
-            {
-                new: true, // Return the updated document
-                runValidators: true, // Ensure the new data adheres to the schema's validation
-            }
-        )
-        const user = await Player.find({email})
-        if (!updatedPlayer || !user) return next(new CustomError('no user found  with this email' , 200));
-        res.status(200).json({
-            status:'success',
-            data:user
-        })
+export const updatePlayer = asyncErrorHandler(async(req,res) =>{
+    const email = req.body.email;
+    const data = req.body.data;
+    const updatedPlayer = await Player.findOneAndUpdate(
+        { email:email }, // Find by email
+        data, // Update data
+        {
+            new: true, // Return the updated document
+            runValidators: true, // Ensure the new data adheres to the schema's validation
+        }
+    )
+    const user = await Player.find({id})
+    if (!updatedPlayer || !user) return next(new CustomError('no user found  with this email' , 200));
+    res.status(200).json({
+        status:'success',
+        data:user
     })
-}
+})
 
 // Controller function to add multiple players
 export const addMultiplePlayers = async (req, res) => {
@@ -65,7 +77,7 @@ export const addMultiplePlayers = async (req, res) => {
             id: player.id,
             email: player.email,
             sport: [sport], // Specify the sport
-            type: ['student'], // Set type to 'student'
+            type: ['faculty'], // Set type to 'student'
             coordinatorFor: [] // Initialize as empty
         }));
 

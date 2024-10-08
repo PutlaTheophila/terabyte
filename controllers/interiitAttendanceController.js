@@ -296,6 +296,7 @@ export const findCoordinatorType = asyncErrorHandler(async (req, res, next) => {
 
     // Find the player by email
     const player = await Player.findOne({ email });
+    if (!player) return next(new CustomError(404, 'You are not authorized to access this route'));
     console.log(email, player);
 
     // If no player is found, return a 404 error

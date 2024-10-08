@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const sportsEnum = {
     student: ['football', 'basketball', 'cricket', 'volleyball', 'athletics','table-tennis','badminton'],
-    faculty: ['tennis', 'badminton', 'chess', 'cricket', 'volleyball', 'athletics']
+    faculty: ['badminton', 'cricket', 'volleyball', 'athletics','table-tennis']
 };
 
 const playerSchema = new mongoose.Schema({
