@@ -260,11 +260,13 @@ export const stats = asyncErrorHandler(async(req, res, next) => {
 
     // Find the sport coordinator, but ensure they are not a secretary
     const coordinator = await Player.findOne({
-        type: coordinatorType,
-        sport: sport,
-        type: { $nin: ['faculty-secretary', 'student-secretary'] }
+        sport: sport, // Match the sport
+        type: { 
+            $all: [coordinatorType],  // Match the coordinator type (student-coordinator or faculty-coordinator)
+            $nin: ['student-secretary', 'faculty-secretary']  // Exclude secretaries
+        }
     });
-
+    console.log(coordinator)
     // Calculate total attendance for the coordinator's specific sport
     const totalDays = coordinator?.attendance?.get(sport)?.length || 0;
 
@@ -376,10 +378,9 @@ export const getPlayersAttendanceBySport = asyncErrorHandler(async (req, res, ne
     const coordinator = await Player.findOne({
         email: email,
         sport: sport,
-        type: { $in: ['student-coordinator', 'faculty-coordinator'] } // Only allows coordinators
+        'type': { $in: ['student-coordinator', 'faculty-coordinator'] },
+        'type': { $nin: ['student-secretary', 'faculty-secretary'] }
     });
-    
-    console.log('coordinator',coordinator);
 
     if (!coordinator) {
         return next(new CustomError('Coordinator not found or does not have the required permissions', 403));

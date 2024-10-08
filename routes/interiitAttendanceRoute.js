@@ -14,7 +14,7 @@ interiitAttendanceRouter.route('/get-attendance/:sport')
 
     // add verify token for this
 interiitAttendanceRouter.route('/stats/:type/:sport')
-    .get(stats)
+    .get(verifyIdToken,stats)
 
 
 interiitAttendanceRouter.route('/mark-attendance-navbar')
