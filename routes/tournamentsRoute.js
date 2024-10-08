@@ -5,7 +5,7 @@ import { getGoogleData, isUserLoggedIn } from "../controllers/authController.js"
 import {verifyIdToken} from "../mw.js"
 
 tournamentsRouter.route('/')
-    .get(verifyIdToken,getAllTournaments)
+    .get(getAllTournaments)
     .post(createTournament)
 tournamentsRouter.route('/:id')
     .patch(updateTournament)
