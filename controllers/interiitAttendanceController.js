@@ -376,9 +376,10 @@ export const getPlayersAttendanceBySport = asyncErrorHandler(async (req, res, ne
     const coordinator = await Player.findOne({
         email: email,
         sport: sport,
-        'type': { $in: ['student-coordinator', 'faculty-coordinator'] },
-        'type': { $nin: ['student-secretary', 'faculty-secretary'] }
+        type: { $in: ['student-coordinator', 'faculty-coordinator'] } // Only allows coordinators
     });
+    
+    console.log('coordinator',coordinator);
 
     if (!coordinator) {
         return next(new CustomError('Coordinator not found or does not have the required permissions', 403));
