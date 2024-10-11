@@ -269,6 +269,7 @@ export const stats = asyncErrorHandler(async(req, res, next) => {
     console.log(coordinator)
     // Calculate total attendance for the coordinator's specific sport
     const totalDays = coordinator?.attendance?.get(sport)?.length || 0;
+    console.log(totalDays);
 
     let data = [];
 

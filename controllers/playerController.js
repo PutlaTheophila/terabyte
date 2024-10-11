@@ -15,7 +15,7 @@ export const createPlayer = asyncErrorHandler(async(req , res , next)=>{
 export const getPlayer = asyncErrorHandler(async (req  , res , next)=>{    
     const  id = req.params.id
     console.log(id);
-    const player = await Player.findOne({id:id});
+    const player = await Player.find({id:id});
     res.status(200).json({
         status:'success',
         data:{
@@ -49,13 +49,9 @@ export const updatePlayer = asyncErrorHandler(async(req,res) =>{
     const data = req.body.data;
     const updatedPlayer = await Player.findOneAndUpdate(
         { email:email }, // Find by email
-        data, // Update data
-        {
-            new: true, // Return the updated document
-            runValidators: true, // Ensure the new data adheres to the schema's validation
-        }
+        data
     )
-    const user = await Player.find({id})
+    const user = await Player.find({email})
     if (!updatedPlayer || !user) return next(new CustomError('no user found  with this email' , 200));
     res.status(200).json({
         status:'success',

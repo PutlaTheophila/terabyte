@@ -14,6 +14,7 @@ import interiitAttendanceRouter from "./routes/interiitAttendanceRoute.js";
 import tournamentsRouter from "./routes/tournamentsRoute.js";
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
+import coordinatorRoute from "./routes/coordinatorRouter.js";
 
 dotenv.config();
 app.use(express.json());
@@ -43,7 +44,8 @@ app.use('/api/v1/auth', authRouter);
 // app.use('/api/v1/attendance/nso', nsoAttendanceRouterr);
 app.use('/api/v1/player', playerRouter);
 app.use('/api/v1/attendance/interiit', interiitAttendanceRouter);
-app.use('/api/v1/tournaments' ,tournamentsRouter)
+app.use('/api/v1/tournaments' ,tournamentsRouter);
+app.use('/api/v1/coordinators',coordinatorRoute);
 
 
 app.get('/' , (req ,res)=>{
