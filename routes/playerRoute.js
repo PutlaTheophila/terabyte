@@ -4,7 +4,7 @@ import { addMultiplePlayers, createPlayer, getAllPlayers, getPlayer, updatePlaye
 
 playerRouter.route('/')
     .post(createPlayer)
-    .get(getPlayer)
+    .get(getAllPlayers)
     .patch(updatePlayer)
     .delete(deletePlayer)
 playerRouter.route('/:id')

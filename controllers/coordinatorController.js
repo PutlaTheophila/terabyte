@@ -1,3 +1,4 @@
+import { ideahub } from "googleapis/build/src/apis/ideahub/index.js";
 import Coordinator from "../models/coordinator.js";
 import asyncErrorHandler from "../utils/async-error-handler.js";
 
@@ -12,7 +13,7 @@ export const createCoordinator = asyncErrorHandler(async(req,res)=>{
 
 export const deleteCoordinator = asyncErrorHandler(async(req,res)=>{
     const id = req.params.id;
-    const coordinators = await Coordinator.findByIdAndDelete(data);
+    const coordinators = await Coordinator.findByIdAndDelete(id);
     res.status(200).json({
         status:'success',
         coordinators

@@ -15,15 +15,10 @@ import tournamentsRouter from "./routes/tournamentsRoute.js";
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import coordinatorRoute from "./routes/coordinatorRouter.js";
+import eventsRouter from "./routes/eventsRouter.js";
 
 dotenv.config();
 app.use(express.json());
-
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*'); // Or specify allowed origins
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//     next();
-// });
 
 app.use(cors({
     origin:'https://iitbhilai-sports.netlify.app',
@@ -46,20 +41,14 @@ app.use('/api/v1/player', playerRouter);
 app.use('/api/v1/attendance/interiit', interiitAttendanceRouter);
 app.use('/api/v1/tournaments' ,tournamentsRouter);
 app.use('/api/v1/coordinators',coordinatorRoute);
+app.use('/api/v1/events',eventsRouter)
 
 
 app.get('/' , (req ,res)=>{
     res.status(200).send('hello');
 })
 
-// app.get ('/api/v1/auth/google' , passport.authenticate('google',{scope:['profile' ,'email']}))
-// app.get('/api/v1/auth/google/callback', passport.authenticate('google' , {
-//     // failureRedirect:"https://sss-vld6.onrender.com",
-//     // successRedirect:"https://sss-vld6.onrender.com/nso"
-//     failureRedirect:"https://sports13.netlify.app/",
-//     successRedirect:"https://sports13.netlify.app/nso"
-// }) , (req ,res)=>{
-//     res.status(200).json('thank you for signing in')
-// })
+
+
 app.use(errorHandler);
 export default app;
