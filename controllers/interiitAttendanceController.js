@@ -138,12 +138,14 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         type: { $in: roleFilter }
     }, 'name id attendance');
 
-    const today = new Date().toISOString().split('T')[0];
-    console.log(today);
+    const today = new Date().toLocaleDateString('en-CA'); // Adjusted to local timezone
+    console.log(`Today's Date in Local Timezone: ${today}`);
 
     const playersWithAttendance = players.map(player => {
         const attendanceForSport = player.attendance?.get(sport) || [];
-        const isMarkedToday = Array.isArray(attendanceForSport) && attendanceForSport.includes(today);
+        const normalizedAttendance = attendanceForSport.map(date => new Date(date).toISOString().split('T')[0]);
+
+        const isMarkedToday = normalizedAttendance.includes(today);
 
         return {
             name: player.name,
@@ -157,6 +159,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         players: playersWithAttendance
     });
 });
+
 
 
 
