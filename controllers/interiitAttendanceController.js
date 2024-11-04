@@ -105,32 +105,27 @@ export const postAttendance = asyncErrorHandler(async (req, res, next) => {
 
 
 export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) => {
-    const email = req.user.payload.email; // Extract the email from the user payload
-    const sport = req.params.sport; // Get the sport from the URL params
-    const coordinator = await Player.findOne({ email });
+    const email = req.user.payload.email;
+    const sport = req.params.sport;
 
-    // Check if the coordinator exists
+    const coordinator = await Player.findOne({ email });
     if (!coordinator) {
         return next(new CustomError(404, 'Coordinator not found'));
     }
 
-    // Check if the sport is present in the coordinator's 'coordinatorFor' field
     if (!coordinator.coordinatorFor.includes(sport)) {
         return next(new CustomError(403, `You are not authorized to manage attendance for ${sport}`));
     }
 
-    // Check if the user is a coordinator or secretary for students or faculty
     const isStudentCoordinator = coordinator.type.includes('student-coordinator');
     const isStudentSecretary = coordinator.type.includes('student-secretary');
     const isFacultyCoordinator = coordinator.type.includes('faculty-coordinator');
     const isFacultySecretary = coordinator.type.includes('faculty-secretary');
 
-    // If the user is neither a coordinator nor a secretary
     if (!(isStudentCoordinator || isStudentSecretary || isFacultyCoordinator || isFacultySecretary)) {
         return next(new CustomError(403, 'You are not authorized to access this route'));
     }
 
-    // Define the role filter for querying the players based on coordinator or secretary type
     let roleFilter = [];
     if (isStudentCoordinator || isStudentSecretary) {
         roleFilter = ['student'];
@@ -138,31 +133,27 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
         roleFilter = ['faculty'];
     }
 
-    // Find players that match the role filter and the specified sport
     const players = await Player.find({
         sport: sport,
-        type: { $in: roleFilter } // Filter by student or faculty players
-    }, 'name id attendance'); // Only return the relevant fields (name, id, and attendance)
+        type: { $in: roleFilter }
+    }, 'name id attendance');
 
-    // Define today's date in the format YYYY-MM-DD
     const today = new Date().toISOString().split('T')[0];
 
-    // Process each player to check attendance for the specified sport
     const playersWithAttendance = players.map(player => {
-        const attendanceForSport = player.attendance.get(sport) || []; // Get attendance array for the sport
-        const isMarkedToday = attendanceForSport.includes(today); // Check if today's date is in the attendance array
+        const attendanceForSport = player.attendance?.get(sport) || [];
+        const isMarkedToday = Array.isArray(attendanceForSport) && attendanceForSport.includes(today);
 
         return {
             name: player.name,
             id: player.id,
-            marked: isMarkedToday // Add marked field based on attendance check
+            marked: isMarkedToday
         };
     });
 
-    // Return the list of players with the attendance check
     res.status(200).json({
         status: 'success',
-        players: playersWithAttendance // Return players array with name, id, and marked status
+        players: playersWithAttendance
     });
 });
 
