@@ -37,7 +37,8 @@ export const deletePlayer = asyncErrorHandler(async (req  , res , next)=>{
 })
 
 export const getAllPlayers = asyncErrorHandler(async(req ,res , next)=>{
-    const players = await Player.find({coordinatorFor:'basketball'});
+    const players = await Player.find({sport:'badminton',type:'student'});
+    // const players = await Player.find({email:'joydeep@iitbhilai.ac.in'});
     res.status(200).json({
         status:'success',
         players
