@@ -139,6 +139,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
     }, 'name id attendance');
 
     const today = new Date().toISOString().split('T')[0];
+    console.log(today);
 
     const playersWithAttendance = players.map(player => {
         const attendanceForSport = player.attendance?.get(sport) || [];
