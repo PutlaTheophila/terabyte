@@ -142,25 +142,30 @@ export const getPlayersForAttendance = asyncErrorHandler(async (req, res, next) 
     const players = await Player.find({
         sport: sport,
         type: { $in: roleFilter } // Filter by student or faculty players
-    }, 'name id'); // Only return the relevant fields (name and id)
+    }, 'name id attendance'); // Only return the relevant fields (name, id, and attendance)
 
-    // Check if any players were found
-    if (players.length === 0) {
-        return res.status(404).json({
-            status: 'fail',
-            message: `No ${roleFilter.join('/')} players found for the specified sport (${sport})`
-        });
-    }
+    // Define today's date in the format YYYY-MM-DD
+    const today = new Date().toISOString().split('T')[0];
 
-    // Log the players list for debugging
-    console.log(players);
+    // Process each player to check attendance for the specified sport
+    const playersWithAttendance = players.map(player => {
+        const attendanceForSport = player.attendance.get(sport) || []; // Get attendance array for the sport
+        const isMarkedToday = attendanceForSport.includes(today); // Check if today's date is in the attendance array
 
-    // Return the list of players (array of objects with name and id)
+        return {
+            name: player.name,
+            id: player.id,
+            marked: isMarkedToday // Add marked field based on attendance check
+        };
+    });
+
+    // Return the list of players with the attendance check
     res.status(200).json({
         status: 'success',
-        players: players // This will return the array of players directly
+        players: playersWithAttendance // Return players array with name, id, and marked status
     });
 });
+
 
 
 
