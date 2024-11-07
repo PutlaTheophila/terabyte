@@ -32,7 +32,7 @@ export const getPlayersForAttendance = asyncErrorHandler(async(req,res)=>{
       const doc = new GoogleSpreadsheet('1x2oD_p4RwcCdXJqzGw_IVnVtcn_YYuK8pmO4XDcuJqA', serviceAccountAuth);
       
     const sport = req.params.sport;
-    await doc.loadInfo(); // retrieve sport from query params
+    await doc.loadInfo(); // retrieve sport from query param
 
   if (!sport) {
     return res.status(400).json({ message: "Sport parameter is required" });
