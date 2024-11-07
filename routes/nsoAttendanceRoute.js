@@ -4,7 +4,7 @@ import { getPlayersForAttendance, getSheetsData } from "../controllers/nsoAttend
 import {verifyIdToken} from "../mw.js"
 
 nsoAttendanceRouter.route('/players/:sport')
-    .get(verifyIdToken,getPlayersForAttendance)
+    .get(getPlayersForAttendance)
 
 
 export default nsoAttendanceRouter;
