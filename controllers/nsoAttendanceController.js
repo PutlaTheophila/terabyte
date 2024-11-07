@@ -6,6 +6,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication
+const serviceAccountAuth = new JWT({
+  email: process.env.SHEETS_SERVICE_ACCOUNT,
+  key: process.env.SHEETS_PRIVATEKEY,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+const doc = new GoogleSpreadsheet('1x2oD_p4RwcCdXJqzGw_IVnVtcn_YYuK8pmO4XDcuJqA', serviceAccountAuth);
 
 
 
@@ -24,15 +30,8 @@ export const getSheetsData = asyncErrorHandler(async(req,res)=>{
 
 
 export const getPlayersForAttendance = asyncErrorHandler(async(req,res)=>{
-    const serviceAccountAuth = new JWT({
-        email: process.env.SHEETS_SERVICE_ACCOUNT,
-        key: process.env.SHEETS_PRIVATEKEY,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-      });
-      const doc = new GoogleSpreadsheet('1x2oD_p4RwcCdXJqzGw_IVnVtcn_YYuK8pmO4XDcuJqA', serviceAccountAuth);
-      
     const sport = req.params.sport;
-    await doc.loadInfo(); // retrieve sport from query param
+    await doc.loadInfo(); // retrieve sport from query params
 
   if (!sport) {
     return res.status(400).json({ message: "Sport parameter is required" });
