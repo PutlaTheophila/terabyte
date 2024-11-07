@@ -69,7 +69,6 @@ export const getPlayersForAttendance = asyncErrorHandler(async(req,res)=>{
       });
     // 9. Send the player data as a response
     return res.status(200).json({ players: playerData });
-
 })
 
 
