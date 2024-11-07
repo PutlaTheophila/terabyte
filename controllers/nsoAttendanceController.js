@@ -25,7 +25,6 @@ export const getSheetsData = asyncErrorHandler(async(req,res)=>{
     const sheet = doc.sheetsByTitle['players_data'];
     const rows = await sheet.getRows();
     console.log(rows[1])
-    // console.log(rows); // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
     res.send('hello');    
 })
 
