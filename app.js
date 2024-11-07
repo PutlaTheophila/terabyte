@@ -16,6 +16,7 @@ import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import coordinatorRoute from "./routes/coordinatorRouter.js";
 import eventsRouter from "./routes/eventsRouter.js";
+import nsoAttendanceRouter from "./routes/nsoAttendanceRoute.js";
 
 dotenv.config();
 app.use(express.json());
@@ -42,6 +43,7 @@ app.use('/api/v1/attendance/interiit', interiitAttendanceRouter);
 app.use('/api/v1/tournaments' ,tournamentsRouter);
 app.use('/api/v1/coordinators',coordinatorRoute);
 app.use('/api/v1/events',eventsRouter)
+app.use('/api/v1/attendance/nso',nsoAttendanceRouter);
 
 
 app.get('/' , (req ,res)=>{
