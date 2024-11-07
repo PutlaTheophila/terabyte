@@ -31,7 +31,7 @@ export const getSheetsData = asyncErrorHandler(async(req,res)=>{
 
 
 export const getPlayersForAttendance = asyncErrorHandler(async(req,res)=>{
-    const sport = 'Badminton';
+    const sport = req.params.sport;
     await doc.loadInfo(); // retrieve sport from query params
 
   if (!sport) {

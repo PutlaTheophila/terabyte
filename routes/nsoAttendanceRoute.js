@@ -3,7 +3,7 @@ const nsoAttendanceRouter = express.Router();
 import { getPlayersForAttendance, getSheetsData } from "../controllers/nsoAttendanceController.js";
 
 
-nsoAttendanceRouter.route('/players')
+nsoAttendanceRouter.route('/players/:sport')
     .get(getPlayersForAttendance)
 
 
