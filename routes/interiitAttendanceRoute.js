@@ -2,6 +2,7 @@ import express from "express"
 const interiitAttendanceRouter = express.Router();
 import { findCoordinatorType, getPlayerForViewAttendance, getPlayersForAttendance, getPlayerAttendance, postAttendance, stats , getPlayersAttendanceBySport} from "../controllers/interiitAttendanceController.js"
 import {verifyIdToken} from "../mw.js"
+//
 
 interiitAttendanceRouter.route('/')
     .post(verifyIdToken,postAttendance)
