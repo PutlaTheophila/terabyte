@@ -8,7 +8,7 @@ dotenv.config()
 // Initialize auth - see https://theoephraim.github.io/node-google-spreadsheet/#/guides/authentication
 const serviceAccountAuth = new JWT({
   email: "sportsiitbhilai@sheets-441013.iam.gserviceaccount.com",
-  key: process.env.SHEETS_PRIVATEKEY,
+  key: process.env.SHEETS_PRIVATEKEY.replace(/\\n/g, '\n'),
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 const doc = new GoogleSpreadsheet('1x2oD_p4RwcCdXJqzGw_IVnVtcn_YYuK8pmO4XDcuJqA', serviceAccountAuth);
