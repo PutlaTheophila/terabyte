@@ -14,9 +14,6 @@ const serviceAccountAuth = new JWT({
 const doc = new GoogleSpreadsheet('1x2oD_p4RwcCdXJqzGw_IVnVtcn_YYuK8pmO4XDcuJqA', serviceAccountAuth);
 
 
-
-
-
 export const getSheetsData = asyncErrorHandler(async(req,res)=>{
     await doc.loadInfo(); // loads document properties and worksheets
     // console.log(doc.title);
@@ -36,8 +33,6 @@ export const getPlayersForAttendance = asyncErrorHandler(async(req,res)=>{
   if (!sport) {
     return res.status(400).json({ message: "Sport parameter is required" });
   }
-
-    
     // Load the first sheet in the document
     const sheet = doc.sheetsByTitle['players_data'];
     
